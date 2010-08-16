@@ -7,7 +7,7 @@
 <p>We are currently working on the layout, the engine, and a couple of other things.  The Go-Live date is still kind of an unknown right now, but we should be ready to roll any day now.</p>
 
 <?php
-$sql = "SELECT g.GameTitle, b.filename, g.id FROM thegamedb.games as g LEFT JOIN thegamedb.banners as b ON g.id = b.keyvalue ORDER BY lastupdated desc LIMIT 6";
+$sql = "SELECT g.GameTitle, b.filename, g.id FROM games as g LEFT JOIN banners as b ON g.id = b.keyvalue GROUP BY g.id ORDER BY lastupdated desc LIMIT 6";
 $result = mysql_query($sql);
 ?>
 
