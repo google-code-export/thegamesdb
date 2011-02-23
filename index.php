@@ -1031,7 +1031,7 @@ foreach ($languages AS $langid => $langname) {
             <div id="header">
                 <p>
                     <?php if($loggedin): ?>
-                    <a href="<?= $baseurl ?>/?tab=logout">Logout</a>
+                    <a href="<?= $baseurl ?>/?function=Log+Out">Logout</a>
                     <?php else: ?>
                     <a href="<?= $baseurl ?>/?tab=login">Login</a>. New to the site? <a href="<?= $baseurl ?>/?tab=register">Register here!</a>
                     <?php endif; ?>
