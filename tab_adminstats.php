@@ -207,7 +207,7 @@ if ($adminuserlevel == 'ADMINISTRATOR') {
 				}
 				?>
 					<tr>
-						<td colspan="2" style="background-color: #EEE; font-weight: bold;" >Total Games With 2 or More Front Boxart: <?php echo $missingcount; ?></td>
+						<td colspan="2" style="background-color: #EEE; font-weight: bold;" >Total Games With 2 or More Front Boxart: <?php echo $morecount; ?></td>
 					</tr>
 				</table>
 				<?php
