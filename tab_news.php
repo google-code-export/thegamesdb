@@ -14,7 +14,7 @@
 	?>
 		<div style="text-align: center;">
 			<h3 class="arcade">Total <span style="color: #00CC3F;">GameCount</span></h3>
-			<span style=" border: 2px solid #666; color: #FFF; background-color: #000; background: url(images/common/bg_button-black.png) center center repeat-x; height: 30px; border-radius: 6px; padding: 5px 15px; font-size: 20px;">
+			<span style=" border: 2px solid #666; color: #FFF; background-color: #000; background: url(<?php echo $baseurl; ?>/images/common/bg_button-black.png) center center repeat-x; height: 30px; border-radius: 6px; padding: 5px 15px; font-size: 20px;">
 				<span><?php echo number_format($countRows); ?></span> <span style="color: #CFCFCF;">Games</span>
 			</span>
 		</div>
@@ -30,13 +30,13 @@
 			<h3 class="arcade" style="text-align: center;"><span style="color: #000;">Browse</span> <span style="color: #EF5F00;">Platforms</span></h3>
 			<form id="platformBrowseForm" action="<?= $baseurl ?>/index.php" onsubmit="if($('#platformMenu').val() != 'select') { return true; } else { alert('Please Select a Platform...'); return false; }">
 				<select name="stringPlatform" id="platformMenu" onchange="showValue(this.value); alert(this.value); if($('#platformMenu').val() != 'select') { document.forms['platformBrowseForm'].submit(); }" style="color: #333;">
-					<option value="select" title="images/common/icons/question-block_24.png">Please Select Platform...</option>
+					<option value="select" title="<?php echo $baseurl; ?>/images/common/icons/question-block_24.png">Please Select Platform...</option>
 					<?php
 								$platformQuery = mysql_query(" SELECT * FROM platforms ORDER BY name ASC");
 								while($platformResult = mysql_fetch_assoc($platformQuery))
 								{
 									?>
-										<option value="<?php echo $platformResult['id']; ?>" title="images/common/consoles/png24/<?php echo $platformResult['icon'];?>"<?php if($stringPlatform == $platformResult['name']) {echo " selected";}?>><?php echo $platformResult['name']; ?></option>
+										<option value="<?php echo $platformResult['id']; ?>" title="<?php echo $baseurl; ?>/images/common/consoles/png24/<?php echo $platformResult['icon'];?>"<?php if($stringPlatform == $platformResult['name']) {echo " selected";}?>><?php echo $platformResult['name']; ?></option>
 									<?php
 								}
 							?>
@@ -73,7 +73,7 @@
 			<ul>
 				<?php while ($row = mysql_fetch_array($result)): ?>
 					<li>
-						<a href="<?= $baseurl ?>/?tab=game&id=<?= $row[2] ?>&lid=1" >
+						<a href="<?= $baseurl ?>/game/<?= $row[2] ?>/" >
 						<?php if (isset($row[1])): ?>
 							<img src="<?= $baseurl ?>/banners/_cache/<?= $row[1] ?>" style="border: 2px solid #CACACA; outline: 1px solid #000;" />
 						<?php endif ?>

@@ -88,10 +88,10 @@
 <?php
 	// Fetch Game Information from DB
 	$id = mysql_real_escape_string($id);
-	$query	= "SELECT g.*, p.name as PlatformName, p.icon as PlatformIcon FROM games as g, platforms as p WHERE g.id=$id AND g.Platform = p.id";
+	$query	= "SELECT p.* FROM platforms as p WHERE p.id=$id";
 	$result = mysql_query($query) or die('Fetch Game Info Query Failed: ' . mysql_error());
 	$rows = mysql_num_rows($result);
-	$game = mysql_fetch_object($result);
+	$platform = mysql_fetch_object($result);
 ?>
 
 <div id="gameWrapper">
@@ -104,25 +104,15 @@
 	<div class="message"><?= $message ?></div>
 	<?php endif; ?>
 	
+		<div id="gamePlatformIcon">
+		</div>
 		<div id="gameTitle">
+		
 			<?php	if ($loggedin == 1) {  ?>
-				<span id ="gameUserLinks"><a href="<?=$baseurl?>?tab=game-edit&id=<?=$game->id?>"><img src="<?php echo $baseurl; ?>/images/common/icons/edit_128.png" style="width:16px; height: 16px; vertical-align: middle;" /></a>&nbsp;<a href="<?=$baseurl?>/game-edit/<?=$game->id?>/">Edit this Game</a>&nbsp;&nbsp;|&nbsp;
-				<?php	## First, generate their userfavorites array
-					$userfavorites = explode(",", $user->favorites);
-
-					## If the user has this as a favorite, display a message and a button
-					## to "Un-favorite".
-					if (in_array($id, $userfavorites, 1)) {
-						print "<a href=\"/?function=ToggleFavorite&id=$id\"><img src=\"$baseurl/images/common/icons/favorite_48.png\" style=\"width:16px; height: 16px; vertical-align: middle;\" /></a>&nbsp;<a href=\"/?function=ToggleFavorite&id=$id\">Unfavorite this Game</a>";
-					}
-					## If the user doesn't have this as a favorite, display a button to
-					## mark it as a favorite.
-					else {
-						print "<a href=\"/?function=ToggleFavorite&id=$id\"><img src=\"$baseurl/images/common/icons/favorite_48.png\" style=\"width:16px; height: 16px; vertical-align: middle;\" /></a>&nbsp;<a href=\"/?function=ToggleFavorite&id=$id\">Favorite this Game</a>";
-					}
-				?>
-			<?php } ?></span>
-			<h1 style="margin: 0px; padding: 0px;"><!--<img src="<?php //echo $baseurl; ?>/images/common/consoles/png48/<?php //echo $game->PlatformIcon; ?>" alt="<?php echo $game->PlatformName; ?>" title="<?php echo $game->PlatformName; ?>" style="vertical-align: middle;" />&nbsp;--><?php echo $game->GameTitle; ?></h1>
+				<span id ="gameUserLinks"><a href="<?=$baseurl?>/platform-edit/<?=$platform->id?>/"><img src="<?php echo $baseurl; ?>/images/common/icons/edit_128.png" style="width:16px; height: 16px; vertical-align: middle;" /></a>&nbsp;<a href="<?=$baseurl?>/platform-edit/<?=$platform->id?>/">Edit this Platform</a></span>
+			<?php } ?><br /><br />
+			
+			<h1 style="margin: 0px; padding: 0px;"><img src="<?php echo $baseurl; ?>/images/common/consoles/png48/<?php echo $platform->icon; ?>" alt="<?php echo $platform->name; ?>" title="<?php echo $platform->name; ?>" style="vertical-align: middle;" />&nbsp;<?php echo $platform->name; ?></h1>
 			<?php if(!empty($game->Alternates)) { ?>
 				<h3><span style="color: #888; font-size: 13px;"><em>
 			<?php echo "a.k.a. ' " . str_replace(",", ", ", $game->Alternates) . " ' "; ?>
@@ -132,24 +122,14 @@
 		<div id="gameCoversWrapper">
 			<div id="gameCovers">
 				<?php
-					if ($frontCoverResult = mysql_query(" SELECT b.filename FROM banners as b WHERE b.keyvalue = '$game->id' AND b.filename LIKE '%boxart%front%' LIMIT 1 "))
+					if ($boxartResult = mysql_query(" SELECT b.filename FROM banners as b WHERE b.keyvalue = '$platform->id' AND b.keytype = 'platform-boxart' LIMIT 1 "))
 					{
-						$front = mysql_fetch_object($frontCoverResult);
-						if (!empty($front))
+						$boxart = mysql_fetch_object($boxartResult);
+						if (!empty($boxart))
 						{
 							?>
-							<img id="frontCover" class="frontCover imgShadow" <?=imageResize("$baseurl/banners/$front->filename", "banners/_gameviewcache/$front->filename", 300, "width")?> alt="<?php echo $game->GameTitle; ?>" title="<?php echo $game->GameTitle; ?>" />
+								<img class="imgShadow" <?=imageResize("$baseurl/banners/$boxart->filename", "banners/_platformviewcache/$boxart->filename", 300, "width")?> alt="<?php echo $game->GameTitle; ?>" title="<?php echo $game->GameTitle; ?>" />
 							<?php
-							if ($backCoverResult = mysql_query(" SELECT b.filename FROM banners as b WHERE b.keyvalue = '$game->id' AND b.filename LIKE '%boxart%back%' LIMIT 1 "))
-							{
-								$back = mysql_fetch_object($backCoverResult);
-								if (!empty($back))
-								{
-								?>
-								<img  id="backCover" class="backCover imgShadow" style="display: none;" <?=imageResize("$baseurl/banners/$back->filename", "banners/_gameviewcache/$back->filename", 300, "width")?> alt="<?php echo $game->GameTitle; ?>" title="<?php echo $game->GameTitle; ?>" />
-								<?php
-								}
-							}
 						}
 						else
 						{
@@ -160,36 +140,12 @@
 					}
 				?>
 			</div>
-			<p style="text-align: center; font-size: 15px;">
-			<?php
-			if (!empty($front) && !empty($back))
-			{
-			?>
-			<a href="javascript: void();" class="gameCoversFlip"><img src="<?php echo $baseurl; ?>/images/common/icons/flip_32.png" style="width:24px; height: 24px; vertical-align: -7px;" /></a>&nbsp;<a href="javascript: void();" class="gameCoversFlip">Flip</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-			<?php
-			}
-			if (!empty($front))
-			{
-			?>
-			<a href="<?="$baseurl/banners/$front->filename"?>" target="_blank"><img src="<?php echo $baseurl; ?>/images/common/icons/expand_48.png" style="width:24px; height: 24px; vertical-align: -6px;" /></a>&nbsp;<a href="<?="$baseurl/banners/$front->filename"?>" target="_blank">Front</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-			<?php
-			}
-			if (!empty($back))
-			{
-			?>
-			<a href="<?="$baseurl/banners/$back->filename"?>" target="_blank"><img src="<?php echo $baseurl; ?>/images/common/icons/expand_48.png" style="width:24px; height: 24px; vertical-align: -6px;" /></a>&nbsp;<a href="<?="$baseurl/banners/$back->filename"?>" target="_blank">Back</a></p>
-			<?php
-			}
-			?>
 		</div>
 		<div id="gameInfo">
-			<h2><img src="<?php echo $baseurl; ?>/images/common/consoles/png32/<?php echo $game->PlatformIcon; ?>" alt="<?php echo $game->PlatformName; ?>" title="<?php echo $game->PlatformName; ?>" style="vertical-align: -8px;" />&nbsp;<?php if (!empty($game->PlatformName)) { ?>
-			<a style="color: #fff;" href="<?= $baseurl ?>/platform/<?= $game->Platform ?>/"><?= $game->PlatformName ?></a>
-			<?php } else { echo "N/A"; } ?></h2>
-			<hr />
+
 			<div id="gameRating">
 				<?php
-					$query	= "SELECT AVG(rating) AS average, count(*) AS count FROM ratings WHERE itemtype='game' AND itemid=$id";
+					$query	= "SELECT AVG(rating) AS average, count(*) AS count FROM ratings WHERE itemtype='platform' AND itemid=$id";
 						$result = mysql_query($query) or die('Query failed: ' . mysql_error());
 						$rating = mysql_fetch_object($result);
 
@@ -210,7 +166,7 @@
 						<?php	if ($loggedin == 1) {  ?>
 						&nbsp;&nbsp;|&nbsp;&nbsp;Your Rating:&nbsp;
 						<?php
-							$query	= "SELECT rating FROM ratings WHERE itemtype='game' AND itemid=$id AND userid=$user->id";
+							$query	= "SELECT rating FROM ratings WHERE itemtype='platform' AND itemid=$id AND userid=$user->id";
 							$result = mysql_query($query) or die('Query failed: ' . mysql_error());
 							$rating = mysql_fetch_object($result);
 							if (!$rating->rating) {
@@ -219,81 +175,28 @@
 
 							for ($i = 1; $i <= 10; $i++) {
 								if ($i <= $rating->rating) {
-									print "<a href=\"$baseurl/game/$id/?function=UserRating&type=game&itemid=$id&rating=$i\" OnMouseOver=\"UserRating2('userrating',$i)\" OnMouseOut=\"UserRating2('userrating',$rating->rating)\"><img src=\"$baseurl/images/game/star_on.png\" width=15 height=15 border=0 name=\"userrating$i\"></a>";
+									print "<a href=\"$baseurl/platform/$id/?function=UserRating&type=platform&itemid=$id&rating=$i\" OnMouseOver=\"UserRating2('userrating',$i)\" OnMouseOut=\"UserRating2('userrating',$rating->rating)\"><img src=\"$baseurl/images/game/star_on.png\" width=15 height=15 border=0 name=\"userrating$i\"></a>";
 								}
 								else {
-									print "<a href=\"$baseurl/game/$id/?function=UserRating&type=game&itemid=$id&rating=$i\" OnMouseOver=\"UserRating2('userrating',$i)\" OnMouseOut=\"UserRating2('userrating',$rating->rating)\"><img src=\"$baseurl/images/game/star_off.png\" width=15 height=15 border=0 name=\"userrating$i\"></a>";
+									print "<a href=\"$baseurl/platform/$id/?function=UserRating&type=platform&itemid=$id&rating=$i\" OnMouseOver=\"UserRating2('userrating',$i)\" OnMouseOut=\"UserRating2('userrating',$rating->rating)\"><img src=\"$baseurl/images/game/star_off.png\" width=15 height=15 border=0 name=\"userrating$i\"></a>";
 								}
 							}
 							?>
 						<?php } ?>
 			</div>
 			<hr />
-			<p><?php if (!empty($game->Overview)) { echo $game->Overview; } else { echo "\"No overview is currently available for this title.\""; } ?></p>
+			<p><?php if (!empty($platform->overview)) { echo $platform->overview; } else { echo "\"No overview is currently available for this platform.\""; } ?></p>
 			<hr />
 			<div id="gameVitals">
-				<div id="esrbIcon" style ="float: right; width: 72px; height: 100px;">
-					<?php
-						switch($game->Rating)
-						{
-							case "EC - Early Childhood":
-								?>
-									<img src="<?= $baseurl ?>/images/game-view/esrb/esrb-ec.png" />
-								<?php
-							break;
-							
-							case "E - Everyone":
-								?>
-									<img src="<?= $baseurl ?>/images/game-view/esrb/esrb-everyone.png" />
-								<?php
-							break;
-							
-							case "E10+ - Everyone 10+":
-								?>
-									<img src="<?= $baseurl ?>/images/game-view/esrb/esrb-e10.png" />
-								<?php
-							break;
-							
-							case "T - Teen":
-								?>
-									<img src="<?= $baseurl ?>/images/game-view/esrb/esrb-teen.png" />
-								<?php
-							break;
-							
-							case "M - Mature":
-								?>
-									<img src="<?= $baseurl ?>/images/game-view/esrb/esrb-mature.png" />
-								<?php
-							break;
-							
-							case "RP - Rating Pending":
-								?>
-									<img src="<?= $baseurl ?>/images/game-view/esrb/esrb-rp.png" />
-								<?php
-							break;
-						}
-					?>
-				</div>
-				<p><span class="grey">Players</span>&nbsp;&nbsp;<?php if (!empty($game->Players)) { echo $game->Players; } else { echo "N/A"; } ?>
-					<span class="grey" style="padding-left: 20px;">Co-op:</span>&nbsp;&nbsp;<?php if($game->coop != false) { echo $game->coop; } else { echo "N/A"; } ?><br />
-				<span class="grey">Genres</span>&nbsp;&nbsp;<?php if (!empty($game->Genre)) { 
-					$genres = explode("|", $game->Genre);
-					$genreCount = 1; 
-					while($genreCount < count($genres) - 1)
-					{
-						echo $genres[$genreCount];
-						if ($genreCount < count($genres) - 2)
-						{
-							echo ", ";
-						}
-						$genreCount++;
-						}
-					}
-					else { echo "N/A"; } ?><br />
-				<span class="grey">Release Date</span>&nbsp;&nbsp;<?php if (!empty($game->ReleaseDate)) { echo $game->ReleaseDate; } else { echo "N/A"; } ?><br />
-				<span class="grey">Developer</span>&nbsp;&nbsp;<?php if (!empty($game->Developer)) { echo $game->Developer; } else { echo "N/A"; } ?><br />
-				<span class="grey">Publisher</span>&nbsp;&nbsp;<?php if (!empty($game->Publisher)) { echo $game->Publisher; } else { echo "N/A"; } ?></p>
-				<div style="clear: both;"></div>
+				<p><span class="grey">Developer</span>&nbsp;&nbsp;<?php if (!empty($platform->developer)) { echo $platform->developer; } else { echo "N/A"; } ?></p>
+				<p><span class="grey">Manufacturer</span>&nbsp;&nbsp;<?php if (!empty($platform->manufacturer)) { echo $platform->manufacturer; } else { echo "N/A"; } ?></p>
+				<p><span class="grey">CPU</span>&nbsp;&nbsp;<?php if (!empty($platform->cpu)) { echo $platform->cpu; } else { echo "N/A"; } ?></p>
+				<p><span class="grey">Memory</span>&nbsp;&nbsp;<?php if (!empty($platform->memory)) { echo $platform->memory; } else { echo "N/A"; } ?></p>
+				<p><span class="grey">Graphics</span>&nbsp;&nbsp;<?php if (!empty($platform->graphics)) { echo $platform->graphics; } else { echo "N/A"; } ?></p>
+				<p><span class="grey">Sound</span>&nbsp;&nbsp;<?php if (!empty($platform->sound)) { echo $platform->sound; } else { echo "N/A"; } ?></p>
+				<p><span class="grey">Display</span>&nbsp;&nbsp;<?php if (!empty($platform->display)) { echo $platform->display; } else { echo "N/A"; } ?></p>
+				<p><span class="grey">Media</span>&nbsp;&nbsp;<?php if (!empty($platform->media)) { echo $platform->media; } else { echo "N/A"; } ?></p>
+				<p><span class="grey">Max. Controllers</span>&nbsp;&nbsp;<?php if (!empty($platform->maxcontrollers)) { echo $platform->maxcontrollers; } else { echo "N/A"; } ?></p>
 			</div>
 			<?php if($game->Platform == 1 || $game->Platform == 37) { ?>
 			<hr />
@@ -307,9 +210,10 @@
 					<span class="grey">Sound:</span> <?php if($game->sound == ""){echo "N/A";} else{echo $game->sound;} ?></p>
 				</div>
 			<? } ?>
-			
+
 		</div>
 		<div style="clear:both"></div>
+		
 	</div>
 	
 	<div id="gameContent">
@@ -317,10 +221,10 @@
 		
 			<div id="panelNav">
 				<ul>
-					<li><a id="nav_fanartScreens" class="active" href="#gameContentTop" onclick="contentShow('fanartScreens');">Fanart &amp; Screenshots</a></li>
+					<li><a id="nav_fanartScreens" class="active" href="#gameContentTop" onclick="contentShow('fanartScreens');">Fanart</a></li>
 					<li><a id="nav_banners" href="#gameContentTop" onclick="contentShow('banners');">Banners</a></li>
-					<li><a id="nav_platforms" href="#gameContentTop" onclick="contentShow('platforms');">Other Platforms</a></li>
-					<li><a id="nav_trailer" href="#gameContentTop" onclick="contentShow('trailer');">Game Trailer</a></li>
+					<li><a id="nav_platforms" href="#gameContentTop" onclick="contentShow('platforms');">Top Rated Games</a></li>
+					<li><a id="nav_trailer" href="#gameContentTop" onclick="contentShow('trailer');">Platform Trailer</a></li>
 				</ul>
 				<div style="clear: both;"></div>
 			</div>
@@ -336,7 +240,7 @@
 					<div class="slider-wrapper theme-default">
 						<div id="fanartRibbon" style="position: absolute; width: 125px; height: 125px; background: url(<?= $baseurl ?>/images/game-view/ribbon-fanart.png) no-repeat; z-index: 10"></div>
 						<?php
-						if ($fanartResult = mysql_query(" SELECT b.filename FROM banners as b WHERE b.keyvalue = '$game->id' AND b.keytype = 'fanart' "))
+						if ($fanartResult = mysql_query(" SELECT b.filename FROM banners as b WHERE b.keyvalue = '$platform->id' AND b.keytype = 'platform-fanart' "))
 						{
 							$fanSlideCount = 0;
 							if(mysql_num_rows($fanartResult) > 0)
@@ -348,7 +252,7 @@
 								{	
 									// $dims = getimagesize("$baseurl/banners/$fanart->filename"); echo "$dims[0] x $dims[1]"; 
 							?>
-									<img  class="fanartSlide imgShadow" <?=imageResize("$baseurl/banners/$fanart->filename", "banners/_gameviewcache/$fanart->filename", 470, "width")?> alt="<?php echo $game->GameTitle; ?> Fanart" title="<a href='<?="$baseurl/banners/$fanart->filename"?>' target='_blank'>View Full-Size</a> | <a href='game-fanart-slideshow.php?id=<?=$game->id?>' target='_blank'>Full-screen Slideshow</a>" />
+									<img  class="fanartSlide imgShadow" <?=imageResize("$baseurl/banners/$fanart->filename", "banners/_platformviewcache/$fanart->filename", 470, "width")?> alt="<?php echo $game->GameTitle; ?> Fanart" title="<a href='<?="$baseurl/banners/$fanart->filename"?>' target='_blank'>View Full-Size</a> | <a href='game-fanart-slideshow.php?id=<?=$game->id?>' target='_blank'>Full-screen Slideshow</a>" />
 							<?php
 									$fanSlideCount++;
 								}
@@ -371,9 +275,9 @@
 				<div id="screens">
 					
 					<div class="slider-wrapper theme-default">
-						<div id="screensRibbon" style="position: absolute; width: 125px; height: 125px; background: url(<?= $baseurl ?>/images/game-view/ribbon-screens.png) no-repeat; z-index: 10"></div>
+						<div id="screensRibbon" style="position: absolute; width: 125px; height: 125px; background: url(<?= $baseurl ?>/images/game-view/ribbon-fanart.png) no-repeat; z-index: 10"></div>
 						<?php
-						if ($screenResult = mysql_query(" SELECT b.filename FROM banners as b WHERE b.keyvalue = '$game->id' AND b.keytype = 'screenshot' "))
+						if ($screenResult = mysql_query(" SELECT b.filename, AVG(r.rating) AS rating FROM games AS g, banners AS b, ratings AS r WHERE r.itemid = b.id AND g.id = b.keyvalue AND r.itemtype = 'banner' AND b.keytype = 'fanart' AND g.Platform = $platform->id GROUP BY b.filename HAVING AVG(r.rating) > 5 ORDER BY AVG(r.rating) DESC LIMIT 10 "))
 						{
 							if(mysql_num_rows($screenResult) > 0)
 							{
@@ -384,7 +288,7 @@
 								while($screen = mysql_fetch_object($screenResult))
 								{	
 							?>
-									<img  class="screenSlide" <?=imageDualResize("$baseurl/banners/$screen->filename", "banners/_gameviewcache/$screen->filename", 470, 264)?> alt="<?php echo $game->GameTitle; ?> Screenshot" title="<a href='<?="$baseurl/banners/$screen->filename"?>' target='_blank'>View Full-Size</a>" />
+									<img  class="screenSlide" <?=imageDualResize("$baseurl/banners/$screen->filename", "banners/_platformviewcache/$screen->filename", 470, 264)?> alt="<?php echo $platform->name; ?> Top-Rated Fanart" title="Top-Rated Game Fanart for this Platform | <a href='<?="$baseurl/banners/$screen->filename"?>' target='_blank'>View Full-Size</a>" />
 							<?php
 									$screenSlideCount++;
 								}
@@ -411,7 +315,7 @@
 				<div class="slider-wrapper theme-default">
 					<div id="bannerRibbon" style="display: none; position: absolute; width: 125px; height: 125px; background: url(<?= $baseurl ?>/images/game-view/ribbon-banners.png) no-repeat; z-index: 10"></div>
 					<?php
-					if ($bannerResult = mysql_query(" SELECT b.filename FROM banners as b WHERE b.keyvalue = '$game->id' AND b.keytype = 'series' ") or die ("banner query failed" . mysql_error()))
+					if ($bannerResult = mysql_query(" SELECT b.filename FROM banners as b WHERE b.keyvalue = '$platform->id' AND b.keytype = 'platform-banner' ") or die ("banner query failed" . mysql_error()))
 					{
 						if(mysql_num_rows($bannerResult) > 0)
 						{
@@ -422,7 +326,7 @@
 							while($banner = mysql_fetch_array($bannerResult))
 							{	
 						?>
-								<img class="bannerSlide" src="<?="$baseurl/banners/$banner[filename]"?>" alt="<?php echo $game->GameTitle; ?> Banner" />
+								<img class="bannerSlide" src="<?="$baseurl/banners/$banner[filename]"?>" alt="<?php echo $platform->name; ?> Banner" />
 						<?php
 								$bannerSlideCount++;
 							}
@@ -445,44 +349,56 @@
 			</div>
 		
 			<div id="platforms">
-				<div style="margin: auto; width: 500px; box-shadow: 0px 0px 22px #000; border-radius: 16px; background-color: #1e1e1e; text-align: center; margin-top: 20px;">
+				<!--<div style="margin: auto; width: 500px; box-shadow: 0px 0px 22px #000; border-radius: 16px; background-color: #1e1e1e; text-align: center; margin-top: 20px;"> -->
 					<div style="padding: 20px;">
-						<h3 style="color: #fff;">Other Platforms with this Game</h3>
-						<?php
-							$similarResult = mysql_query(" SELECT g.id, g.platform, g.GameTitle, p.name, p.icon FROM games as g, platforms as p WHERE g.GameTitle = \"$game->GameTitle\" AND g.Platform <> '$game->Platform' AND g.Platform = p.id ORDER BY p.name");
-							$similarRowCount = mysql_num_rows($similarResult);
-							if($similarRowCount > 0)
-							{
-								?>
-								<p>This game exists on <?=$similarRowCount?> other platforms.</p>
+						<h3 style="color: #fff; text-align: center;">Top Rated Games for <?= $platform->name ?></h3>
 								<?php
-								while($similarRow = mysql_fetch_assoc($similarResult))
-								{
-									?>
-										<div style="margin-top: 10px; font-size: 16px;"><img src="<?=$baseurl?>/images/common/consoles/png32/<?=$similarRow['icon']?>" alt="<?=$similarRow['name']?>" style="vertical-align: -8px;" />&nbsp;&nbsp;<a href="<?=$baseurl?>?tab=game&id=<?=$similarRow['id']?>"><?=$similarRow['name']?> - <?=$similarRow['GameTitle']?></a></div>
-									<?php
-								}
+									$sql = "SELECT DISTINCT g.GameTitle, AVG(r.rating) AS gamerating, p.name, g.id FROM games AS g, banners AS b, platforms AS p, ratings AS r WHERE g.Platform = $platform->id AND p.id = g.Platform AND r.itemid = g.id AND r.itemtype = 'game'  GROUP BY g.GameTitle, g.id ORDER BY AVG(r.rating)  DESC LIMIT 6";
+									$result = mysql_query($sql);
+									if ($result != false) {
+										$rows = mysql_num_rows($result);
+										//echo "NUMBER: $rows<br />";
 								?>
-								<p>If you know this game exists on another platform, why not <a href="<?=$baseurl?>?tab=addgame&passTitle=<?=$game->GameTitle?>">add it</a>.</p>
 								<?php
-							}
-							else
-							{
+										while($row = mysql_fetch_object($result))
+										{
+											$coverResult = mysql_query(" SELECT b.filename FROM banners as b WHERE b.keyvalue = $row->id AND b.keytype = 'boxart' AND b.filename LIKE '%front%' LIMIT 1 ");
+											if ($coverResult != false)
+											{
+												$cover = mysql_fetch_object($coverResult)
+												
+												//echo "$row->id, $row->GameTitle, $row->name, " . (int)$row->gamerating . "/10, $cover->filename<br />";
+												?>
+													<div class="topGame" style="width: 240px; height: 270px; padding: 20px;  float: left; margin: 16px;">
+														<div style="height: 202px; text-align: center;">
+														<?php if($cover->filename != false) { ?>
+															<a href="<?= $baseurl ?>/game/<?= $row->id ?>/"><img class="imgShadow" <?=imageDualResize("$baseurl/banners/$cover->filename", "banners/_platformviewcache/$cover->filename", 200, 200)?> style="border: 1px solid #FFF" alt="<?= $row->GameTitle ?>" title="<?= $row->GameTitle ?>" /></a>
+															<?php } else { ?>
+															<a href="<?= $baseurl ?>/game/<?= $row->id ?>/"><img class="imgShadow" src="<?= $baseurl ?>/images/common/placeholders/boxart_blank.png" style="width: 140px; height: 200px; border: 1px solid #FFF" alt="<?= $row->GameTitle ?>" title="<?= $row->GameTitle ?>" /></a>
+															<?php } ?>
+														</div>
+														<div style="text-align: center;">
+															<p><a href="<?= $baseurl ?>/game/<?= $row->id ?>/"><?= $row->GameTitle ?></a><br />
+															Site Rating: <?= (int)$row->gamerating ?>/10</p>
+														</div>
+													</div>
+												<?php
+											}
+										}
 								?>
-								<p>There are currently no other platforms that have this game yet...</p>
-								<p>If you know of one, why not <a href="<?=$baseurl?>?tab=addgame&passTitle=<?=$game->GameTitle?>">add it</a>.</p>
+										
 								<?php
-							}
-						?>
+									}
+								?>
 					</div>
-				</div>
+				<!-- </div> -->
 				<div style="clear: both;"></div>
 			</div>
 			
 			<div id="trailer">
-				<?php if ($game->Youtube != "") { ?>
+				<?php if ($platform->youtube != "") { ?>
 				<div style="margin: auto; width: 853px; box-shadow: 0px 0px 22px #000;">
-					<iframe width="853" height="510" src="http://www.youtube.com/embed/<?=str_replace("&hd=1", "", str_replace("?hd=1", "", "$game->Youtube")) . "?hd=1"?>" frameborder="0" allowfullscreen></iframe>
+					<iframe width="853" height="510" src="http://www.youtube.com/embed/<?=str_replace("&hd=1", "", str_replace("?hd=1", "", "$platform->youtube")) . "?hd=1"?>" frameborder="0" allowfullscreen></iframe>
 					<div style="clear: both;"></div>
 				</div>
 				<?php } else { ?>

@@ -1,4 +1,5 @@
 <?php if ($adminuserlevel == 'ADMINISTRATOR') { ?>
+<?php if (!isset($cptab)) { $cptab = "userinfo"; } ?>
 <div style="text-align: center;">
 	<h1 class="arcade">Admin Control Panel:</h1>
 </div>

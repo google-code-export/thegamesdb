@@ -92,7 +92,7 @@
 	<p>&nbsp;</p>
 	<h3>Sorry, you must be logged in to add a new game.</h3>
 	<p>&nbsp;</p>
-	<p><a href="<?= $baseurl ?>/?tab=login">Login</a>,  or <a href="<?= $baseurl ?>/?tab=register">Register Here</a> if you're new to the site...</p>
+	<p><a href="<?= $baseurl ?>/login/">Login</a>,  or <a href="<?= $baseurl ?>/register/">Register Here</a> if you're new to the site...</p>
 	<p>&nbsp;</p>
 </div>
 	

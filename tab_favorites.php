@@ -28,8 +28,11 @@ function imageResize($filename, $cleanFilename, $target)
 		$image = null;
 	}
 	//returns the new sizes in html image tag format...this is so you can plug this function inside an image tag and just get the
-	return "src=\"$cleanFilename\"";
+	return "src=\"$baseurl/$cleanFilename\"";
 }
+?>
+<?php
+	if ($loggedin == 1) {
 ?>
 <div>
 <?php
@@ -52,20 +55,20 @@ function imageResize($filename, $cleanFilename, $target)
 				<div>
 					<h2 class="arcade" style="float: left;"><?=$user->username?>'s Favorites</h2>
 					<div style="width: 80px; text-align: center; float: right;">
-						<a href="<?=$baseurl?>?tab=favorites&favoritesview=table"><img src="<?=$baseurl?>/images/common/icons/viewicons/table.png" alt="table"/></a>
-						<p style="margin-top: 2px;"><a href="<?=$baseurl?>?tab=favorites&favoritesview=table" style="color: #dd4400">Table</a></p>
+						<a href="<?=$baseurl?>/favorites/?favoritesview=table"><img src="<?=$baseurl?>/images/common/icons/viewicons/table.png" alt="table"/></a>
+						<p style="margin-top: 2px;"><a href="<?=$baseurl?>/favorites/?favoritesview=table" style="color: #dd4400">Table</a></p>
 					</div>
 					<div style="width: 80px; text-align: center; float: right;">
-						<a href="<?=$baseurl?>?tab=favorites&favoritesview=banner"><img src="<?=$baseurl?>/images/common/icons/viewicons/banner.png" alt="banner"/></a>
-						<p style="margin-top: 2px;"><a href="<?=$baseurl?>?tab=favorites&favoritesview=banner" style="color: #dd4400">Banner</a></p>
+						<a href="<?=$baseurl?>/favorites/?favoritesview=banner"><img src="<?=$baseurl?>/images/common/icons/viewicons/banner.png" alt="banner"/></a>
+						<p style="margin-top: 2px;"><a href="<?=$baseurl?>/favorites/?favoritesview=banner" style="color: #dd4400">Banner</a></p>
 					</div>
 					<div style="width: 80px; text-align: center; float: right;">
-						<a href="<?=$baseurl?>?tab=favorites&favoritesview=boxart"><img src="<?=$baseurl?>/images/common/icons/viewicons/boxart.png" alt="boxart"/></a>
-						<p style="margin-top: 2px;"><a href="<?=$baseurl?>?tab=favorites&favoritesview=boxart" style="color: #dd4400">Boxart</a></p>
+						<a href="<?=$baseurl?>/favorites/?favoritesview=boxart"><img src="<?=$baseurl?>/images/common/icons/viewicons/boxart.png" alt="boxart"/></a>
+						<p style="margin-top: 2px;"><a href="<?=$baseurl?>/favorites/?favoritesview=boxart" style="color: #dd4400">Boxart</a></p>
 					</div>
 					<div style="width: 80px; text-align: center; float: right;">
-						<a href="<?=$baseurl?>?tab=favorites&favoritesview=tile"><img src="<?=$baseurl?>/images/common/icons/viewicons/tile.png" alt="tile"/></a>
-						<p style="margin-top: 2px;"><a href="<?=$baseurl?>?tab=favorites&favoritesview=tile" style="color: #dd4400">Tile</a></p>
+						<a href="<?=$baseurl?>/favorites/?favoritesview=tile"><img src="<?=$baseurl?>/images/common/icons/viewicons/tile.png" alt="tile"/></a>
+						<p style="margin-top: 2px;"><a href="<?=$baseurl?>/favorites/?favoritesview=tile" style="color: #dd4400">Tile</a></p>
 					</div>
 					<div style="clear: both;"></div>
 				</div>
@@ -102,7 +105,7 @@ function imageResize($filename, $cleanFilename, $target)
 										}
 									?>
 									</div>
-									<h3><a href="<?=$baseurl?>?tab=game&id=<?=$game->id?>" style="color: #000;"><?=$game->GameTitle?></a></h3>
+									<h3><a href="<?=$baseurl?>/game/<?=$game->id?>/" style="color: #000;"><?=$game->GameTitle?></a></h3>
 									<p><img src="<?=$baseurl?>/images/common/consoles/png24/<?=$game->icon?>" alt="<?=$game->name?>" style="vertical-align: -6px;" />&nbsp;<?=$game->name?></p>
 									<?php
 										$platformIdQuery = mysql_query("SELECT * FROM platforms WHERE id = '$game->Platform' LIMIT 1");
@@ -117,9 +120,9 @@ function imageResize($filename, $cleanFilename, $target)
 										$bannerQuery = mysql_query("SELECT keyvalue FROM banners WHERE banners.keyvalue = '$game->id' AND keytype = 'series' LIMIT 1");
 										$bannerResult = mysql_num_rows($bannerQuery);
 										
-										if($boxartResult != 0){ ?>Boxart:&nbsp;<img src="images/common/icons/tick_16.png" alt="Yes" /> | <?php } else{ ?>Boxart:&nbsp;<img src="images/common/icons/cross_16.png" alt="No" /> | <?php }
-										if($fanartResult != 0){ ?>Fanart:&nbsp;<img src="images/common/icons/tick_16.png" alt="Yes" /> | <?php } else{ ?>Fanart:&nbsp;<img src="images/common/icons/cross_16.png" alt="No" /> | <?php }
-										if($bannerResult != 0){ ?>Banner:&nbsp;<img src="images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?>Banner:&nbsp;<img src="images/common/icons/cross_16.png" alt="No" /><?php }?>
+										if($boxartResult != 0){ ?>Boxart:&nbsp;<img src="<?= $baseurl ?>/images/common/icons/tick_16.png" alt="Yes" /> | <?php } else{ ?>Boxart:&nbsp;<img src="<?= $baseurl ?>/images/common/icons/cross_16.png" alt="No" /> | <?php }
+										if($fanartResult != 0){ ?>Fanart:&nbsp;<img src="<?= $baseurl ?>/images/common/icons/tick_16.png" alt="Yes" /> | <?php } else{ ?>Fanart:&nbsp;<img src="<?= $baseurl ?>/images/common/icons/cross_16.png" alt="No" /> | <?php }
+										if($bannerResult != 0){ ?>Banner:&nbsp;<img src="<?= $baseurl ?>/images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?>Banner:&nbsp;<img src="<?= $baseurl ?>/images/common/icons/cross_16.png" alt="No" /><?php }?>
 									<div style="clear: both;"></div>
 								</div>
 							<?php
@@ -154,7 +157,7 @@ function imageResize($filename, $cleanFilename, $target)
 										}
 									?>
 									</div>
-									<h3><a href="<?=$baseurl?>?tab=game&id=<?=$game->id?>" style="color: #000;"><?=$game->GameTitle?></a></h3>
+									<h3><a href="<?=$baseurl?>/game/<?=$game->id?>/" style="color: #000;"><?=$game->GameTitle?></a></h3>
 									<p><img src="<?=$baseurl?>/images/common/consoles/png24/<?=$game->icon?>" alt="<?=$game->name?>" style="vertical-align: -6px;" />&nbsp;<?=$game->name?></p>
 									<div style="clear: both;"></div>
 								</div>
@@ -195,7 +198,7 @@ function imageResize($filename, $cleanFilename, $target)
 										}
 									?>
 									</div>
-									<h3><a href="<?=$baseurl?>?tab=game&id=<?=$game->id?>" style="color: #000;"><?=$game->GameTitle?></a></h3>
+									<h3><a href="<?=$baseurl?>/game/<?=$game->id?>/" style="color: #000;"><?=$game->GameTitle?></a></h3>
 									<p><img src="<?=$baseurl?>/images/common/consoles/png24/<?=$game->icon?>" alt="<?=$game->name?>" style="vertical-align: -6px;" />&nbsp;<?=$game->name?></p>
 									<div style="clear: both;"></div>
 								</div>
@@ -259,8 +262,8 @@ function imageResize($filename, $cleanFilename, $target)
 						?>
 						<tr>
 							<td align="center" class="<?php echo $class; ?>"><?php echo $game->id; ?></td>
-							<td class="<?php echo $class; ?>"><a href="<?php echo $baseurl; ?>/?tab=game&id=<?php echo $game->id; ?>&lid=1"><?php echo $game->GameTitle; ?></a></td>
-							<td class="<?php echo $class; ?>"><img src="images/common/consoles/png16/<?php echo $game->icon; ?>" alt="<?php echo $game->name; ?>" style="vertical-align: middle;" /> <?php echo $platformIdResult->name; ?></td>
+							<td class="<?php echo $class; ?>"><a href="<?php echo $baseurl; ?>/game/<?= $game->id ?>/"><?php echo $game->GameTitle; ?></a></td>
+							<td class="<?php echo $class; ?>"><img src="<?= $baseurl ?>/images/common/consoles/png16/<?php echo $game->icon; ?>" alt="<?php echo $game->name; ?>" style="vertical-align: middle;" /> <?php echo $platformIdResult->name; ?></td>
 							<td class="<?php echo $class; ?>">
 								<?php if(!empty($game->Genre))
 								{
@@ -291,9 +294,9 @@ function imageResize($filename, $cleanFilename, $target)
 								?>
 							</td>
 							<td class="<?php echo $class; ?>"><?php echo $game->Rating; ?></td>
-							<td align="center" class="<?php echo $class; ?>"><?php if($boxartResult != 0){ ?><img src="images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?><img src="images/common/icons/cross_16.png" alt="Yes" /><?php }?></td>
-							<td align="center" class="<?php echo $class; ?>"><?php if($fanartResult != 0){ ?><img src="images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?><img src="images/common/icons/cross_16.png" alt="Yes" /><?php }?></td>
-							<td align="center" class="<?php echo $class; ?>"><?php if($bannerResult != 0){ ?><img src="images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?><img src="images/common/icons/cross_16.png" alt="Yes" /><?php }?></td>
+							<td align="center" class="<?php echo $class; ?>"><?php if($boxartResult != 0){ ?><img src="<?= $baseurl ?>/images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?><img src="<?= $baseurl ?>/images/common/icons/cross_16.png" alt="Yes" /><?php }?></td>
+							<td align="center" class="<?php echo $class; ?>"><?php if($fanartResult != 0){ ?><img src="<?= $baseurl ?>/images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?><img src="<?= $baseurl ?>/images/common/icons/cross_16.png" alt="Yes" /><?php }?></td>
+							<td align="center" class="<?php echo $class; ?>"><?php if($bannerResult != 0){ ?><img src="<?= $baseurl ?>/images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?><img src="<?= $baseurl ?>/images/common/icons/cross_16.png" alt="Yes" /><?php }?></td>
 						</tr>
 					<?php
 					}
@@ -310,3 +313,15 @@ function imageResize($filename, $cleanFilename, $target)
 				
 			</div>
 </div>
+<?php
+	}
+	else
+	{
+	?>
+		<div>
+			<h2>Whoops!</h2>
+			<p>You must be logged in to view your favorites.</p>
+		</div>
+	<?php
+	}
+?>

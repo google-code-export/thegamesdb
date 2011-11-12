@@ -27,14 +27,14 @@
 			if($function == "Advanced Search")
 			{
 			?>
-		<a href="javascript: void();" onclick="$('#advancedSearchPanel').slideToggle(); if($('#chevron').attr('src') == 'images/common/icons/expand_16.png') { $('#chevron').attr('src', 'images/common/icons/collapse_16.png'); } else { $('#chevron').attr('src', 'images/common/icons/expand_16.png'); }" style="text-decoration: none; outline: 0px; color: #EF5F00; font-weight: bold;">Advanced Search <img id="chevron" src="images/common/icons/collapse_16.png" alt="Expand/Collapse" style="vertical-align:middle;" /></a>
+		<a href="javascript: void();" onclick="$('#advancedSearchPanel').slideToggle(); if($('#chevron').attr('src') == 'images/common/icons/expand_16.png') { $('#chevron').attr('src', 'images/common/icons/collapse_16.png'); } else { $('#chevron').attr('src', 'images/common/icons/expand_16.png'); }" style="text-decoration: none; outline: 0px; color: #EF5F00; font-weight: bold;">Advanced Search <img id="chevron" src="<?= $baseurl ?>/images/common/icons/collapse_16.png" alt="Expand/Collapse" style="vertical-align:middle;" /></a>
 		<div id="advancedSearchPanel" style="border: 1px solid #666; background-color: #999; padding: 15px; border-radius: 10px; color: #FFF; font-weight: bold;">
 			<?php
 			}
 			else
 			{
 			?>
-		<a href="javascript: void();" onclick="$('#advancedSearchPanel').slideToggle(); if($('#chevron').attr('src') == 'images/common/icons/expand_16.png') { $('#chevron').attr('src', 'images/common/icons/collapse_16.png'); } else { $('#chevron').attr('src', 'images/common/icons/expand_16.png'); }" style="text-decoration: none; outline: 0px; color: #EF5F00; font-weight: bold;">Advanced Search <img id="chevron" src="images/common/icons/expand_16.png" alt="Expand/Collapse" style="vertical-align:middle;" /></a>
+		<a href="javascript: void();" onclick="$('#advancedSearchPanel').slideToggle(); if($('#chevron').attr('src') == 'images/common/icons/expand_16.png') { $('#chevron').attr('src', 'images/common/icons/collapse_16.png'); } else { $('#chevron').attr('src', 'images/common/icons/expand_16.png'); }" style="text-decoration: none; outline: 0px; color: #EF5F00; font-weight: bold;">Advanced Search <img id="chevron" src="<?= $baseurl ?>/images/common/icons/expand_16.png" alt="Expand/Collapse" style="vertical-align:middle;" /></a>
 		<div id="advancedSearchPanel" style="display: none; border: 1px solid #666; background-color: #999; padding: 15px; border-radius: 10px; color: #FFF; font-weight: bold;">
 			<?php
 			}
@@ -346,7 +346,7 @@
 				<tr>
 					<td align="center" class="<?php echo $class; ?>"><?php echo $game->id; ?></td>
 					<td class="<?php echo $class; ?>"><a href="<?php echo $baseurl; ?>/?tab=game&id=<?php echo $game->id; ?>&lid=1"><?php echo $game->GameTitle; ?></a></td>
-					<td class="<?php echo $class; ?>"><img src="images/common/consoles/png16/<?php echo $platformIdResult->icon; ?>" alt="<?php echo $platformIdResult->name; ?>" style="vertical-align: middle;" /> <?php echo $platformIdResult->name; ?></td>
+					<td class="<?php echo $class; ?>"><img src="<?= $baseurl ?>/images/common/consoles/png16/<?php echo $platformIdResult->icon; ?>" alt="<?php echo $platformIdResult->name; ?>" style="vertical-align: middle;" /> <?php echo $platformIdResult->name; ?></td>
 					<td class="<?php echo $class; ?>">
 						<?php if(!empty($game->Genre))
 						{
@@ -377,9 +377,9 @@
 						?>
 					</td>
 					<td class="<?php echo $class; ?>"><?php echo $game->Rating; ?></td>
-					<td align="center" class="<?php echo $class; ?>"><?php if($boxartResult != 0){ ?><img src="images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?><img src="images/common/icons/cross_16.png" alt="Yes" /><?php }?></td>
-					<td align="center" class="<?php echo $class; ?>"><?php if($fanartResult != 0){ ?><img src="images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?><img src="images/common/icons/cross_16.png" alt="Yes" /><?php }?></td>
-					<td align="center" class="<?php echo $class; ?>"><?php if($bannerResult != 0){ ?><img src="images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?><img src="images/common/icons/cross_16.png" alt="Yes" /><?php }?></td>
+					<td align="center" class="<?php echo $class; ?>"><?php if($boxartResult != 0){ ?><img src="<?= $baseurl ?>/images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?><img src="<?= $baseurl ?>/images/common/icons/cross_16.png" alt="Yes" /><?php }?></td>
+					<td align="center" class="<?php echo $class; ?>"><?php if($fanartResult != 0){ ?><img src="<?= $baseurl ?>/images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?><img src="<?= $baseurl ?>/images/common/icons/cross_16.png" alt="Yes" /><?php }?></td>
+					<td align="center" class="<?php echo $class; ?>"><?php if($bannerResult != 0){ ?><img src="<?= $baseurl ?>/images/common/icons/tick_16.png" alt="Yes" /><?php } else{ ?><img src="<?= $baseurl ?>/images/common/icons/cross_16.png" alt="Yes" /><?php }?></td>
 				</tr>
 				</tr>
 				<?php
