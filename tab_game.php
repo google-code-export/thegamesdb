@@ -498,7 +498,7 @@
 		
 		<div id="gameContentBottom">
 
-			<div style="text-align: center;"><a style="font-size: 18px; color: #fff; text-decoration: none; text-shadow: 0px 0px 10px #000;" href="#gameContentBottom"  onclick="$('#comments').slideDown();">Comments&nbsp;&nbsp;<img style="vertical-align: middle;" src="<?= $baseurl; ?>/images/common/icons/collapse-alt_16.png" alt="Show Comments" title="Show Comments" /></a></div>
+			<div style="text-align: center;"><a style="font-size: 18px; color: #fff; text-decoration: none; text-shadow: 0px 0px 10px #000;" href="#gameContentBottom"  onclick="$('#comments').slideToggle();">Comments&nbsp;&nbsp;<img style="vertical-align: middle;" src="<?= $baseurl; ?>/images/common/icons/collapse-alt_16.png" alt="Show Comments" title="Show Comments" /></a></div>
 			
 			<hr style="margin: 10px 0px 14px 0px;" />
 

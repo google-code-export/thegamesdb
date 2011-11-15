@@ -1671,7 +1671,7 @@ else
 	</style>
 	
 	<?php
-		$sql = "SELECT g.GameTitle, p.name, g.id, b.filename FROM games AS g, banners AS b, platforms AS p, ratings AS r WHERE r.itemid = b.id AND g.id = b.keyvalue AND r.itemtype = 'banner' AND b.keytype = 'fanart' AND g.platform = p.id GROUP BY g.GameTitle, p.name, g.id, b.filename    HAVING AVG(r.rating) = 10 ORDER BY RAND() LIMIT 6";
+		$sql = "SELECT g.GameTitle, p.name, p.id AS platformid, p.icon, g.id, b.filename FROM games AS g, banners AS b, platforms AS p, ratings AS r WHERE r.itemid = b.id AND g.id = b.keyvalue AND r.itemtype = 'banner' AND b.keytype = 'fanart' AND g.platform = p.id GROUP BY g.GameTitle, p.name, g.id, b.filename    HAVING AVG(r.rating) = 10 ORDER BY RAND() LIMIT 6";
 		$result = mysql_query($sql);
 		if ($result !== FALSE) {
 		$rows = mysql_num_rows($result);
@@ -1688,6 +1688,12 @@ else
                 include('simpleimage50.php');
 				
 				while ($game = mysql_fetch_object($result)) {
+
+					// Get Game Rating
+					$ratingquery	= "SELECT AVG(rating) AS average, count(*) AS count FROM ratings WHERE itemtype='game' AND itemid=$game->id";
+					$ratingresult = mysql_query($ratingquery) or die('Query failed: ' . mysql_error());
+					$rating = mysql_fetch_object($ratingresult);					
+					
 					if($gameRowCount != $rows - 1) 
 					{
 							// Recompress Fanart to 50% Jpeg Quality and save to front page image cache
@@ -1705,7 +1711,10 @@ else
 									"cssclass" : "<?=$colours[$colourCount]?>",
 									"image" : "banners/_frontcache/<?=$game->filename?>",
 									"text" : "<?=$game->name?>",
-									"url" : 'index.php?tab=game&id=<?=$game->id?>&lid=1',
+									"icon" : "<?= $game->icon; ?>",
+									"platformid" : "<?= $game->platformid; ?>",
+									"rating" : "<?php for ($i = 2; $i <= 10; $i = $i + 2) {	if ($i <= $rating->average) { print '<img src=\'images/game/star_on.png\' width=15 height=15 border=0>'; }	else if ($rating->average > $i - 2 && $rating->average < $i) { print '<img src=\'images/game/star_half.png\' width=15 height=15 border=0>'; } else {	print '<img src=\'images/game/star_off.png\' width=15 height=15 border=0>'; } } ?>",
+									"url" : '<?= $baseurl; ?>/game/<?=$game->id?>/',
 									"urltext" : 'View Game'
 							},
 					<?php
@@ -1736,7 +1745,9 @@ else
 									"cssclass" : "<?=$colours[$colourCount]?>",
 									"image" : "banners/_frontcache/<?=$game->filename?>",
 									"text" : "<?=$game->name?>",
-									"url" : 'index.php?tab=game&id=<?=$game->id?>&lid=1',
+									"icon" : "<?= $game->icon; ?>",
+									"rating" : "<?php for ($i = 2; $i <= 10; $i = $i + 2) {	if ($i <= $rating->average) { print '<img src=\'images/game/star_on.png\' width=15 height=15 border=0>'; }	else if ($rating->average > $i - 2 && $rating->average < $i) { print '<img src=\'images/game/star_half.png\' width=15 height=15 border=0>'; } else {	print '<img src=\'images/game/star_off.png\' width=15 height=15 border=0>'; } } ?>",
+									"url" : '<?= $baseurl; ?>/game/<?=$game->id?>/',
 									"urltext" : 'View Game'
 							}
 					<?php
