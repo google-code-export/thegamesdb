@@ -18,8 +18,34 @@
 				case "userinfo":
 					?>
 					<h2 class="arcade">User Information | <?=$user->username?></h2>
-					<form action="<?=$fullurl?>" method="POST">
-						<div id="red"><?=$errormessage?></div>
+					
+					<div style="float:left;">
+						<form style="padding: 14px; border: 1px solid #999; background-color: #E6E6E6;" method="post" action="<?= $baseurl; ?>/admincp/" enctype="multipart/form-data">
+						<h2>User Image...</h2>
+						<?php
+						$filename = glob("banners/users/" . $comments->userid . "*.jpg");
+						if(file_exists($filename[0]))
+						{
+						?>
+							<p style="text-align: center;"><img src="<?= $baseurl; ?>/<?= $filename[0]; ?>" alt="Current User Image" title="Current User Image" /></p>
+						<?php
+							$filename = null;
+						}
+						else
+						{
+						?>
+							<p style="text-align: center;"><img src="<?= $baseurl; ?>/images/common/icons/user-black_64.png" alt="Current User Image" title="Current User Image" /></p>
+						<?php
+						}
+						?>
+							<p style="text-align: center;">
+							<input type="file" name="userimage" /><br />
+							<input type="hidden" name="function" value="Update User Image" />
+							<input type="submit" name="submit" value="Upload Image" /></p>
+						</form>
+					</div>
+					
+					<form action="<?=$fullurl?>" method="POST" style="float:left; border-left: 1px solid #333; padding-left: 16px; margin-left: 16px;">
 						<table cellspacing="2" cellpadding="2" border="0" align="center">
 							<tr>
 								<td><b>Password</b></td>

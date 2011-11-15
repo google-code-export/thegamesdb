@@ -2,6 +2,9 @@
 ## Connect to the database
 include("include.php");
 
+## Other Includes
+include("extentions/wideimage/WideImage.php"); ## Image Manipulation Library
+
 ## Start session
 session_start();
 $time = time();
@@ -696,6 +699,36 @@ if ($function == 'Upload Platform Banner') {
 	$message .= "Banner sucessfully added.";
 }
 
+/*
+ * Comments Functions
+ */
+
+function check_input($value)
+{
+// Stripslashes
+if (get_magic_quotes_gpc())
+  {
+  $value = stripslashes($value);
+  }
+// Quote if not a number
+if (!is_numeric($value))
+  {
+  $value = "'" . mysql_real_escape_string($value) . "'";
+  }
+return $value;
+}
+ 
+if ($function == 'Add Game Comment') {
+	$comment = htmlspecialchars($comment, ENT_QUOTES);
+	$userid = check_input($userid);
+	$gameid = check_input($gameid);
+	$commentQuery = mysql_query(" INSERT INTO comments (userid, gameid, comment, timestamp) VALUES ('$userid', '$gameid', '$comment', FROM_UNIXTIME($time)) ") or die('Query failed: ' . mysql_error());
+}
+
+if ($function == 'Delete Game Comment') {
+	$commentQuery = mysql_query(" DELETE FROM comments WHERE id = $commentid ") or die('Query failed: ' . mysql_error());
+}
+
 
 #####################################################
 ## REGISTRATION AND PASSWORD FUNCTIONS
@@ -806,6 +839,26 @@ if ($function == 'Update User Information') {
     }
 }
 
+## Update Users Image
+if ($function == 'Update User Image') {
+	if($_FILES['userimage']['error'] == 0)
+	{
+		$existingfiles = glob("banners/users/" . $user->id . "*.jpg");
+		foreach ($existingfiles as $userfile)
+		{
+			unlink($userfile);
+		}
+		$filename = $_FILES['userimage']['name'];
+		$image = WideImage::load($_FILES['userimage']['tmp_name']);
+		$resized = $image->resize(64, 64);
+		$resized->saveToFile("banners/users/$user->id-" . date("YmdHis") . ".jpg");
+		$message = "Successfully Uploaded User Image";
+	}
+	else
+	{
+		$errormessage = "There was a problem uploading the image. Try again or use a different image.";
+	}
+}
 
 ## Administrator's User Update Form
 if ($function == 'Admin Update User') {
@@ -1630,51 +1683,71 @@ else
 				$colourCount = 0;
 				$gameRowCount = 0;
 				$imageUrls = array();
+				
+				// Include JPEG Reducer Class
+                include('simpleimage50.php');
+				
 				while ($game = mysql_fetch_object($result)) {
 					if($gameRowCount != $rows - 1) 
 					{
-						$imageUrls[] = "<?php echo $baseurl; ?>/banners/$game->filename";
+							// Recompress Fanart to 50% Jpeg Quality and save to front page image cache
+							if(!file_exists("banners/_frontcache/$game->filename"))
+							{
+									$image = new SimpleImage();
+									$image->load("banners/$game->filename");
+									$image->save("banners/_frontcache/$game->filename");
+							}
+							
+							$imageUrls[] = "banners/_frontcache/$game->filename";
 					?>
-						{
-							"title" : "<?=$game->GameTitle?>",
-							"cssclass" : "<?=$colours[$colourCount]?>",
-							"image" : "<?php echo $baseurl; ?>/banners/<?=$game->filename?>",
-							"text" : "<?=$game->name?>",
-							"url" : '<?php echo $baseurl; ?>/game/<?=$game->id?>/',
-							"urltext" : 'View Game'
-						},
+							{
+									"title" : "<?=$game->GameTitle?>",
+									"cssclass" : "<?=$colours[$colourCount]?>",
+									"image" : "banners/_frontcache/<?=$game->filename?>",
+									"text" : "<?=$game->name?>",
+									"url" : 'index.php?tab=game&id=<?=$game->id?>&lid=1',
+									"urltext" : 'View Game'
+							},
 					<?php
-						if($colourCount != 5)
-						{
-							$colourCount++;
-						}
-						else
-						{
-							$colourCount = 0;
-						}
-						$gameRowCount++;
+							if($colourCount != 5)
+							{
+									$colourCount++;
+							}
+							else
+							{
+									$colourCount = 0;
+							}
+							$gameRowCount++;
 					}
 					else
 					{
-						$imageUrls[] = "banners/$game->filename";
+							// Recompress Fanart to 50% Jpeg Quality and save to front page image cache
+							if(!file_exists("banners/_frontcache/$game->filename"))
+							{
+									$image = new SimpleImage();
+									$image->load("banners/$game->filename");
+									$image->save("banners/_frontcache/$game->filename");
+							}
+						
+							$imageUrls[] = "banners/_frontcache/$game->filename";
 					?>
-						{
-							"title" : "<?=$game->GameTitle?>",
-							"cssclass" : "<?=$colours[$colourCount]?>",
-							"image" : "<?php echo $baseurl; ?>/banners/<?=$game->filename?>",
-							"text" : "<?=$game->name?>",
-							"url" : '<?php echo $baseurl; ?>/game/<?=$game->id?>/',
-							"urltext" : 'View Game'
-						}
+							{
+									"title" : "<?=$game->GameTitle?>",
+									"cssclass" : "<?=$colours[$colourCount]?>",
+									"image" : "banners/_frontcache/<?=$game->filename?>",
+									"text" : "<?=$game->name?>",
+									"url" : 'index.php?tab=game&id=<?=$game->id?>&lid=1',
+									"urltext" : 'View Game'
+							}
 					<?php
-						if($colourCount != 2)
-						{
-							$colourCount++;
-						}
-						else
-						{
-							$colourCount = 0;
-						}
+							if($colourCount != 2)
+							{
+									$colourCount++;
+							}
+							else
+							{
+									$colourCount = 0;
+							}
 					}
 				}
 	?>
