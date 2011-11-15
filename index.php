@@ -199,6 +199,18 @@ if ($function == 'Add Game') {
     }
 }
 
+// Function to auto-redirect to game page if only one result is found
+if ($function == "Search")
+{
+	$searchQuery = mysql_query("SELECT g.id FROM games as g, platforms as p WHERE (SOUNDEX(g.GameTitle) LIKE CONCAT('%', SOUNDEX('$string'), '%') OR g.GameTitle LIKE '%$string%') AND g.Platform = p.id");
+	if (mysql_num_rows($searchQuery) == 1)
+	{
+		$searchResult = mysql_fetch_object($searchQuery);
+		$tab = "game";
+		$id  = $searchResult->id;
+	}
+}
+
 /*
  * Game Functions
  */
@@ -1563,24 +1575,24 @@ if($tab != "mainmenu")
 		</div>
 		</div>
 
-		<!-- <script>
-			$(function() {
-				var availableTags = [
-					<?php/*
-						if($titlesResult = mysql_query(" SELECT DISTINCT GameTitle FROM games ORDER BY GameTitle ASC; "))
+		<script type="text/javascript">
+		$(function() {
+			var availableTags = [
+				<?php
+					if($titlesResult = mysql_query(" SELECT DISTINCT GameTitle FROM games ORDER BY GameTitle ASC; "))
+					{
+						while($titlesObj = mysql_fetch_object($titlesResult))
 						{
-							while($titlesObj = mysql_fetch_object($titlesResult))
-							{
-								echo " '" . htmlentities($titlesObj->GameTitle, ENT_QUOTES) . "', ";
-							}
+							echo " \"$titlesObj->GameTitle\",\n";
 						}
-					*/?>
-				];
-				$( ".autosearch" ).autocomplete({
-					source: availableTags
-				});
+					}
+				?>
+			];
+			$( ".autosearch" ).autocomplete({
+				source: availableTags
 			});
-		</script> -->
+		});
+	</script>
 		
 			<script type="text/javascript">
 
