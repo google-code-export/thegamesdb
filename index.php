@@ -191,7 +191,7 @@ if ($function == 'Add Game') {
         $sql = "INSERT INTO audits values(NULL, {$_SESSION['userid']}, 'created', $id, NULL)";
         mysql_query($sql);
 
-        $URL = "$baseurl/?tab=game&id=$id";
+        $URL = "$baseurl/game/$id/";
         header("Location: $URL");
 		echo $selectedPlatform;
     } else {
@@ -941,6 +941,30 @@ if ($function == 'Update Site News') {
 	else {
 		$errormessage = 'You must be logged in as an admin to make that change';
 	}
+}
+
+if ($function == 'Add Platform') {
+    ## Check for exact matches for platform name
+    $PlatformTitle = mysql_real_escape_string($PlatformTitle);
+    $PlatformTitle = ucfirst($PlatformTitle);
+    $query = " SELECT * FROM platforms WHERE name='$PlatformTitle' ";
+    $result = mysql_query($query) or die('Query failed: ' . mysql_error());
+
+    ## Insert if it doesnt exist already
+    if (mysql_num_rows($result) == 0) {
+        $query = "INSERT INTO platforms (name, icon) VALUES ('$PlatformTitle', 'console_atari.png')";
+        $result = mysql_query($query) or die('Query failed: ' . mysql_error());
+        $id = mysql_insert_id();
+
+        // Add Audit
+        //$sql = "INSERT INTO audits values(NULL, {$_SESSION['userid']}, 'created', $id, NULL)";
+        //mysql_query($sql);
+
+        $URL = "$baseurl/platform/$id/";
+        header("Location: $URL");
+    } else {
+        $errormessage = "Sorry, \"$PlatformTitle\" Already Exists in Platforms.";
+    }
 }
 
 

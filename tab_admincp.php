@@ -9,6 +9,7 @@
 		<ul>
 			<li<?php if($cptab == "userinfo"){ ?> class="active" <?php } ?>><a href="<?= $baseurl ?>/?tab=admincp&cptab=userinfo">My User Info</a></li>
 			<li<?php if($cptab == "sitenews"){ ?> class="active" <?php } ?>><a href="<?= $baseurl ?>/?tab=admincp&cptab=sitenews">Edit Site News</a></li>
+			<li<?php if($cptab == "addplatform"){ ?> class="active" <?php } ?>><a href="<?= $baseurl ?>/?tab=admincp&cptab=addplatform">Add New Platform</a></li>
 		</ul>
 	</div>
 	<div id="controlPanelContent">
@@ -235,6 +236,23 @@
 								]
 						});
 					</script>
+					<?php
+					break;
+				
+				case "addplatform":
+					?>
+					<h2 class="arcade">User Information | <?=$user->username?></h2>
+					
+					<div style="width: 500px; margin: auto;">
+						<form style="padding: 14px; border: 1px solid #999; background-color: #E6E6E6;" method="post" action="<?= $baseurl; ?>/admincp/" enctype="multipart/form-data">
+						<h2>Add A Platform...</h2>
+							<p style="text-align: center;"><img src="<?= $baseurl; ?>/images/common/consoles/png24/console_atari.png" style="vertical-align: middle;" />&nbsp;To create a new platform, enter it's name below.</p>
+							<p style="text-align: center;">Platform Name:&nbsp;<input type="text" name="PlatformTitle" size="60" /><br />
+							<input type="hidden" name="function" value="Add Platform" />
+							<input type="submit" name="submit" value="Add New Platform" /></p>
+						</form>
+					</div>
+
 					<?php
 					break;
 				
