@@ -239,7 +239,12 @@
 			}
 
 			## No matches found?
-			if ($gamecount == 0)  {
+			if (empty($stringPlatform))
+			{
+				print "<tr><td class=\"odd\" colspan=\"8\" align=\"center\" style=\"font-weight: bold;\">Please select the platform you would like to view";
+				print "</td></tr>\n";
+			}
+			elseif ($gamecount == 0)  {
 				print "<tr><td class=\"odd\" colspan=\"8\" align=\"center\" style=\"font-weight: bold;\">This platform does not have any games yet... Why not <a href=\"$baseurl/addgame/?passPlatform=$stringPlatform\">add one</a>?";
 				print "</td></tr>\n";
 				
