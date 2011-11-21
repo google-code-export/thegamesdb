@@ -202,6 +202,7 @@ if ($function == 'Add Game') {
 // Function to auto-redirect to game page if only one result is found
 if ($function == "Search")
 {
+	$string = mysql_real_escape_string($string);
 	$searchQuery = mysql_query("SELECT g.id FROM games as g, platforms as p WHERE (SOUNDEX(g.GameTitle) LIKE CONCAT('%', SOUNDEX('$string'), '%') OR g.GameTitle LIKE '%$string%') AND g.Platform = p.id");
 	if (mysql_num_rows($searchQuery) == 1)
 	{
@@ -1671,7 +1672,8 @@ if($tab != "mainmenu")
 				?>
 			];
 			$( ".autosearch" ).autocomplete({
-				source: availableTags
+				source: availableTags,
+				select: function(event, ui) { this.form.submit(); }
 			});
 		});
 	</script>
@@ -1984,7 +1986,8 @@ else
 				?>
 			];
 			$( "#frontGameSearch" ).autocomplete({
-				source: availableTags
+				source: availableTags,
+				select: function(event, ui) { $("#search").submit(); }
 			});
 		});
 	</script>
