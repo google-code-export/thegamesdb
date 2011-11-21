@@ -967,6 +967,64 @@ if ($function == 'Add Platform') {
     }
 }
 
+if ($function == 'Save Keywords') {
+	if ($adminuserlevel == 'ADMINISTRATOR') {
+		if(mysql_query(" UPDATE publishers SET keyword = '$keyword' WHERE id = '$publisherid' "))
+		{
+			$message = "Pulisher/Developer Keywords Updated Sucessfully";
+		}
+		else
+		{
+			$errormessage = "There was a problem updating Pulisher/Developer Keywords, please try again...";
+		}
+	}
+	else
+	{
+		$errormessage = 'You must be logged in as an admin to make that change';
+	}
+}
+
+if ($function == 'Upload New Logo') {
+	if ($adminuserlevel == 'ADMINISTRATOR') {
+		if($_FILES['logoimage']['error'] == 0)
+		{
+			$currentQuery = mysql_query(" SELECT logo FROM publishers WHERE id = '$publisherid' ");
+			$currentResult = mysql_fetch_object($currentQuery);
+			
+			if(file_exists("banners/publishers/$currentResult->logo"))
+			{
+				unlink("banners/publishers/$currentResult->logo");
+			}
+			
+			if(file_exists("banners/_admincpcache/publishers/$currentResult->logo"))
+			{
+				unlink("banners/_admincpcache/publishers/$currentResult->logo");
+			}
+			
+			$filename = $_FILES['logoimage']['name'];
+			if(move_uploaded_file($_FILES["logoimage"]["tmp_name"], "banners/publishers/" . $_FILES["logoimage"]["name"]))
+			{
+				if(mysql_query(" UPDATE publishers SET logo = '$filename' WHERE id = $publisherid "))
+				{
+					$message = "Successfully Uploaded User Image";
+				}
+			}
+			else
+			{
+				$errormessage = "There was a problem uploading the new Publisher/Developer logo, please try again...";
+			}
+		}
+		else
+		{
+			$errormessage = "There was a problem uploading the image. Try again or use a different image.";
+		}
+	}
+	else
+	{
+		$errormessage = 'You must be logged in as an admin to make that change';
+	}
+}
+
 
 #####################################################
 ## OTHER

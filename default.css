@@ -631,7 +631,7 @@ TABLE#listtable  {
 }
 
 TABLE#listtable TD  {
-	vertical-align: top;
+	/*vertical-align: top;*/
 	font: 9pt Helvetica, Arial, san-serif;
 }
 TABLE#listtable .head {

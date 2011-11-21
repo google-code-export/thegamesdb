@@ -291,8 +291,100 @@
 					}
 					else { echo "N/A"; } ?><br />
 				<span class="grey">Release Date</span>&nbsp;&nbsp;<?php if (!empty($game->ReleaseDate)) { echo $game->ReleaseDate; } else { echo "N/A"; } ?><br />
-				<span class="grey">Developer</span>&nbsp;&nbsp;<?php if (!empty($game->Developer)) { echo $game->Developer; } else { echo "N/A"; } ?><br />
-				<span class="grey">Publisher</span>&nbsp;&nbsp;<?php if (!empty($game->Publisher)) { echo $game->Publisher; } else { echo "N/A"; } ?></p>
+				
+				<?php
+				// Start Developer Logo Replacement
+				if (!empty($game->Developer))
+				{ 
+					$developerBool = false;
+					$devArray = explode(" ", $game->Developer);
+					$i = 0;
+					
+					for($i = 0; $i < count($devArray); $i++)
+					{
+						$developerQuery = mysql_query(" SELECT logo FROM publishers WHERE keyword LIKE '%$devArray[$i]%' ");
+						if($developerQuery)
+						{
+							if(mysql_num_rows($developerQuery) != 0)
+							{
+								$developerResult = mysql_fetch_object($developerQuery);
+								$developerBool = true;
+								$i = count($devArray);
+							}
+						}
+					}
+					if($developerBool == true)
+					{
+						if(!file_exists("banners/_gameviewcache/publishers/$developerResult->logo"))
+						{
+							WideImage::load("banners/publishers/$developerResult->logo")->resize(400, 60)->saveToFile("banners/_gameviewcache/publishers/$developerResult->logo");
+						}
+					?>
+						<span class="grey">Developer</span>&nbsp;&nbsp;<img src="<?= $baseurl; ?>/banners/_gameviewcache/publishers/<?= $developerResult->logo; ?>" alt="<?= $game->Developer; ?>" title="<?= $game->Developer; ?>" style="vertical-align: middle; padding-top: 14px;" /><br />
+					<?php
+					}
+					else
+					{
+					?>
+						<span class="grey">Developer</span>&nbsp;&nbsp;<?php if (!empty($game->Developer)) { echo $game->Developer; } else { echo "N/A"; } ?><br />
+					<?php
+					}
+				}
+				else
+				{
+				?>
+					<span class="grey">Developer</span>&nbsp;&nbsp;<?php if (!empty($game->Developer)) { echo $game->Developer; } else { echo "N/A"; } ?><br />
+				<?php
+				}
+				?>
+				
+				<?php
+				// Start Publisher Logo Replacement
+				if (!empty($game->Publisher))
+				{
+					$publisherBool = false;
+					$pubArray = explode(" ", $game->Publisher);
+					$i = 0;
+					
+					for($i = 0; $i < count($pubArray); $i++)
+					{
+						$publisherQuery = mysql_query(" SELECT logo FROM publishers WHERE keyword LIKE '%$pubArray[$i]%' ");
+						if($publisherQuery)
+						{
+							if(mysql_num_rows($publisherQuery) != 0)
+							{
+								$publisherResult = mysql_fetch_object($publisherQuery);
+								$publisherBool = true;
+								$i = count($pubArray);
+							}
+						}
+					}
+					if($publisherBool == true)
+					{
+						if(!file_exists("banners/_gameviewcache/publishers/$publisherResult->logo"))
+						{
+							WideImage::load("banners/publishers/$publisherResult->logo")->resize(400, 60)->saveToFile("banners/_gameviewcache/publishers/$publisherResult->logo");
+						}
+					?>
+						<span class="grey">Publisher</span>&nbsp;&nbsp;<img src="<?= $baseurl; ?>/banners/_gameviewcache/publishers/<?= $publisherResult->logo; ?>" alt="<?= $game->Publisher; ?>" title="<?= $game->Publisher; ?>" style="vertical-align: middle; padding-top: 14px;" />
+					<?php
+					}
+					else
+					{
+					?>
+						<span class="grey">Publisher</span>&nbsp;&nbsp;<?php if (!empty($game->Publisher)) { echo $game->Publisher; } else { echo "N/A"; } ?>
+					<?php
+					}
+				}
+				else
+				{
+				?>
+					<span class="grey">Publisher</span>&nbsp;&nbsp;<?php if (!empty($game->Publisher)) { echo $game->Publisher; } else { echo "N/A"; } ?>
+				<?php
+				}
+				?>
+				
+				</p>
 				<div style="clear: both;"></div>
 			</div>
 			<?php if($game->Platform == 1 || $game->Platform == 37) { ?>
