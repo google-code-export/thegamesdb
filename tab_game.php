@@ -274,9 +274,9 @@
 						}
 					?>
 				</div>
-				<p><span class="grey">Players</span>&nbsp;&nbsp;<?php if (!empty($game->Players)) { echo $game->Players; } else { echo "N/A"; } ?>
+				<p><span class="grey">Players:</span>&nbsp;&nbsp;<?php if (!empty($game->Players)) { echo $game->Players; } else { echo "N/A"; } ?>
 					<span class="grey" style="padding-left: 20px;">Co-op:</span>&nbsp;&nbsp;<?php if($game->coop != false) { echo $game->coop; } else { echo "N/A"; } ?><br />
-				<span class="grey">Genres</span>&nbsp;&nbsp;<?php if (!empty($game->Genre)) { 
+				<span class="grey">Genres:</span>&nbsp;&nbsp;<?php if (!empty($game->Genre)) { 
 					$genres = explode("|", $game->Genre);
 					$genreCount = 1; 
 					while($genreCount < count($genres) - 1)
@@ -290,7 +290,7 @@
 						}
 					}
 					else { echo "N/A"; } ?><br />
-				<span class="grey">Release Date</span>&nbsp;&nbsp;<?php if (!empty($game->ReleaseDate)) { echo $game->ReleaseDate; } else { echo "N/A"; } ?><br />
+				<span class="grey">Release Date:</span>&nbsp;&nbsp;<?php if (!empty($game->ReleaseDate)) { echo $game->ReleaseDate; } else { echo "N/A"; } ?><br /><br />
 				
 				<?php
 				// Start Developer Logo Replacement
@@ -320,20 +320,20 @@
 							WideImage::load("banners/publishers/$developerResult->logo")->resize(400, 60)->saveToFile("banners/_gameviewcache/publishers/$developerResult->logo");
 						}
 					?>
-						<span class="grey">Developer</span>&nbsp;&nbsp;<img src="<?= $baseurl; ?>/banners/_gameviewcache/publishers/<?= $developerResult->logo; ?>" alt="<?= $game->Developer; ?>" title="<?= $game->Developer; ?>" style="vertical-align: middle; padding-top: 14px;" /><br />
+						<span class="grey">Developer:</span><br /><img src="<?= $baseurl; ?>/banners/_gameviewcache/publishers/<?= $developerResult->logo; ?>" alt="<?= $game->Developer; ?>" title="<?= $game->Developer; ?>" style="vertical-align: middle; padding-bottom: 14px; padding-top: 4px;" /><br />
 					<?php
 					}
 					else
 					{
 					?>
-						<span class="grey">Developer</span>&nbsp;&nbsp;<?php if (!empty($game->Developer)) { echo $game->Developer; } else { echo "N/A"; } ?><br />
+						<span class="grey">Developer:</span>&nbsp;&nbsp;<?php if (!empty($game->Developer)) { echo $game->Developer; } else { echo "N/A"; } ?><br />
 					<?php
 					}
 				}
 				else
 				{
 				?>
-					<span class="grey">Developer</span>&nbsp;&nbsp;<?php if (!empty($game->Developer)) { echo $game->Developer; } else { echo "N/A"; } ?><br />
+					<span class="grey">Developer:</span>&nbsp;&nbsp;<?php if (!empty($game->Developer)) { echo $game->Developer; } else { echo "N/A"; } ?><br />
 				<?php
 				}
 				?>
@@ -366,20 +366,20 @@
 							WideImage::load("banners/publishers/$publisherResult->logo")->resize(400, 60)->saveToFile("banners/_gameviewcache/publishers/$publisherResult->logo");
 						}
 					?>
-						<span class="grey">Publisher</span>&nbsp;&nbsp;<img src="<?= $baseurl; ?>/banners/_gameviewcache/publishers/<?= $publisherResult->logo; ?>" alt="<?= $game->Publisher; ?>" title="<?= $game->Publisher; ?>" style="vertical-align: middle; padding-top: 14px;" />
+						<span class="grey">Publisher:</span><br /><img src="<?= $baseurl; ?>/banners/_gameviewcache/publishers/<?= $publisherResult->logo; ?>" alt="<?= $game->Publisher; ?>" title="<?= $game->Publisher; ?>" style="vertical-align: middle; padding-bottom: 14px; padding-top: 4px;" />
 					<?php
 					}
 					else
 					{
 					?>
-						<span class="grey">Publisher</span>&nbsp;&nbsp;<?php if (!empty($game->Publisher)) { echo $game->Publisher; } else { echo "N/A"; } ?>
+						<span class="grey">Publisher:</span>&nbsp;&nbsp;<?php if (!empty($game->Publisher)) { echo $game->Publisher; } else { echo "N/A"; } ?>
 					<?php
 					}
 				}
 				else
 				{
 				?>
-					<span class="grey">Publisher</span>&nbsp;&nbsp;<?php if (!empty($game->Publisher)) { echo $game->Publisher; } else { echo "N/A"; } ?>
+					<span class="grey">Publisher:</span>&nbsp;&nbsp;<?php if (!empty($game->Publisher)) { echo $game->Publisher; } else { echo "N/A"; } ?>
 				<?php
 				}
 				?>

@@ -203,12 +203,41 @@ if ($function == 'Add Game') {
 if ($function == "Search")
 {
 	$string = mysql_real_escape_string($string);
-	$searchQuery = mysql_query("SELECT g.id FROM games as g, platforms as p WHERE (SOUNDEX(g.GameTitle) LIKE CONCAT('%', SOUNDEX('$string'), '%') OR g.GameTitle LIKE '%$string%') AND g.Platform = p.id");
+	
+	$searchQuery = mysql_query("SELECT g.id FROM games as g WHERE g.GameTitle = '$string'");
 	if (mysql_num_rows($searchQuery) == 1)
 	{
 		$searchResult = mysql_fetch_object($searchQuery);
 		$tab = "game";
 		$id  = $searchResult->id;
+	}
+	else
+	{
+		$searchQuery = mysql_query("SELECT g.id FROM games as g, platforms as p WHERE (SOUNDEX(g.GameTitle) LIKE CONCAT('%', SOUNDEX('$string'), '%') OR g.GameTitle LIKE '%$string%') AND g.Platform = p.id");
+		if (mysql_num_rows($searchQuery) == 1)
+		{
+			$searchResult = mysql_fetch_object($searchQuery);
+			$tab = "game";
+			$id  = $searchResult->id;
+		}
+	}
+}
+
+// Function to update last search/favorites view type in users db table
+if ($updateview == "yes")
+{
+	if ($loggedin == 1)
+	{
+		if (!empty($searchview))
+		{
+			$mode = $searchview;
+		}
+		elseif (!empty($favoritesview))
+		{
+			$mode = $favoritesview;
+		}
+		mysql_query(" UPDATE users SET favorites_displaymode = '$mode' WHERE id = '$user->id' ");
+		$user->favorites_displaymode = $mode;
 	}
 }
 
@@ -1553,7 +1582,7 @@ if($tab != "mainmenu")
 			<div id="frontBanner" style="width: 880px; margin: auto;">
 				<p style="position: absolute; top: 10px; right: 15px; font-family:Arial; font-size:10pt; margin: 0px; padding: 0px;">
 					<?php if ($loggedin) {
-						?><a href="<?= $baseurl ?>/favorites/?favoritesview=tile">Favorites (<?php if($user->favorites != ""){ echo count(explode(",", $user->favorites)); } else{ echo "0"; } ?>)</a> <span style="color: #ccc;">|</span> <?php if ($adminuserlevel == 'ADMINISTRATOR') { ?> <a href="<?= $baseurl ?>/admincp/">Admin Control Panel</a> <?php } else { ?><a href="<?= $baseurl ?>/userinfo/">My User Info</a><?php } ?> <span style="color: #ccc;">|</span> <a href="<?= $baseurl ?>/?function=Log Out">Logout</a>
+						?><a href="<?= $baseurl ?>/favorites/">Favorites (<?php if($user->favorites != ""){ echo count(explode(",", $user->favorites)); } else{ echo "0"; } ?>)</a> <span style="color: #ccc;">|</span> <?php if ($adminuserlevel == 'ADMINISTRATOR') { ?> <a href="<?= $baseurl ?>/admincp/">Admin Control Panel</a> <?php } else { ?><a href="<?= $baseurl ?>/userinfo/">My User Info</a><?php } ?> <span style="color: #ccc;">|</span> <a href="<?= $baseurl ?>/?function=Log Out">Logout</a>
 					<?php } else { ?>
 						<a href="<?= $baseurl ?>/login/">Login</a> <span style="color: #ccc;">|</span> New to the site? <a href="<?= $baseurl ?>/register/">Register here!</a>
 					<?php } ?>
@@ -1566,9 +1595,8 @@ if($tab != "mainmenu")
 		
 		<div id="nav" style="position: absolute; top: 78px; width: 100%;">
 			<div style="width: 1000px; margin: 0px auto;">
-				<form id="search" action="<?= $baseurl ?>/index.php" method="get">
+				<form id="search" action="<?= $baseurl ?>/search/">
 					<input class="left autosearch" type="text" name="string" style="color: #333; margin-left: 40px; margin-top: 5px; width: 190px;" />
-					<input type="hidden" name="tab" value="listseries" />
 					<input type="hidden" name="function" value="Search" />
 					<input class="left"type="submit" value="Search" style="margin-top: 4px; margin-left: 4px; height: 24px;" />
 				</form>
@@ -1588,16 +1616,15 @@ if($tab != "mainmenu")
 		<div id="tinyHeader" style="position: fixed; width: 100%; height: 50px; z-index: 299;">			
 			<div style="width: 100%; height: 35px; background: #000;">
 				<div style="width: 1000px; margin: auto; background: #000 url(<?php echo $baseurl; ?>/images/header-tiny.png) no-repeat center left;">
-					<form action="<?= $baseurl ?>/index.php" style="width: 300px; display: inline;">
+					<form action="<?= $baseurl ?>/search/" style="width: 300px; display: inline;">
 						<input class="left autosearch" type="text" name="string" style="color: #333; margin-left: 40px; margin-top: 5px; width: 190px;" />
-						<input type="hidden" name="tab" value="listseries" />
 						<input type="hidden" name="function" value="Search" />
 						<input class="left"type="submit" value="Search" style="margin-top: 4px; margin-left: 4px; height: 24px;" />
 					</form>
 					<a href="<?php echo $baseurl; ?>/" style="margin-left: 50px;"><img src="<?php echo $baseurl; ?>/images/tiny-logo.png" alt="TheGamesDB.net" /></a>
 					<p style="position: absolute; top: 10px; right: 15px; font-family:Arial; font-size:10pt; margin: 0px; padding: 0px;">
 					<?php if ($loggedin) {
-						?><a href="<?= $baseurl ?>/favorites/?favoritesview=tile">Favorites (<?php if($user->favorites != ""){ echo count(explode(",", $user->favorites)); } else{ echo "0"; } ?>)</a> <span style="color: #ccc;">|</span> <?php if ($adminuserlevel == 'ADMINISTRATOR') { ?> <a href="<?= $baseurl ?>/admincp/">Admin Control Panel</a> <?php } else { ?><a href="<?= $baseurl ?>/userinfo/">My User Info</a><?php } ?> <span style="color: #ccc;">|</span> <a href="<?= $baseurl ?>/?function=Log Out">Logout</a>
+						?><a href="<?= $baseurl ?>/favorites/">Favorites (<?php if($user->favorites != ""){ echo count(explode(",", $user->favorites)); } else{ echo "0"; } ?>)</a> <span style="color: #ccc;">|</span> <?php if ($adminuserlevel == 'ADMINISTRATOR') { ?> <a href="<?= $baseurl ?>/admincp/">Admin Control Panel</a> <?php } else { ?><a href="<?= $baseurl ?>/userinfo/">My User Info</a><?php } ?> <span style="color: #ccc;">|</span> <a href="<?= $baseurl ?>/?function=Log Out">Logout</a>
 					<?php } else { ?>
 						<a href="<?= $baseurl ?>/login/">Login</a> <span style="color: #ccc;">|</span> New to the site? <a href="<?= $baseurl ?>/register/">Register here!</a>
 					<?php } ?>
@@ -1870,7 +1897,7 @@ else
 		<div id="frontBanner" style="width: 880px; margin: auto;">
 			<p style="position: absolute; top: 10px; right: 15px; font-family:Arial; font-size:10pt;">
 				<?php if ($loggedin) {
-					?><a href="<?= $baseurl ?>/favorites/?favoritesview=tile">Favorites (<?php if($user->favorites != ""){ echo count(explode(",", $user->favorites)); } else{ echo "0"; } ?>)</a> <span style="color: #ccc;">|</span> <?php if ($adminuserlevel == 'ADMINISTRATOR') { ?> <a href="<?= $baseurl ?>/admincp/">Admin Control Panel</a> <?php } else { ?><a href="<?= $baseurl ?>/userinfo/">My User Info</a><?php } ?> <span style="color: #ccc;">|</span> <a href="<?= $baseurl ?>/?function=Log Out">Logout</a>
+					?><a href="<?= $baseurl ?>/favorites/">Favorites (<?php if($user->favorites != ""){ echo count(explode(",", $user->favorites)); } else{ echo "0"; } ?>)</a> <span style="color: #ccc;">|</span> <?php if ($adminuserlevel == 'ADMINISTRATOR') { ?> <a href="<?= $baseurl ?>/admincp/">Admin Control Panel</a> <?php } else { ?><a href="<?= $baseurl ?>/userinfo/">My User Info</a><?php } ?> <span style="color: #ccc;">|</span> <a href="<?= $baseurl ?>/?function=Log Out">Logout</a>
 				<?php } else { ?>
 					<a href="<?= $baseurl ?>/login/">Login</a> <span style="color: #ccc;">|</span> New to the site? <a href="<?= $baseurl ?>/register/">Register here!</a>
 				<?php } ?>
@@ -1905,10 +1932,9 @@ else
 			</h1>
 			
 			<div id="searchbox" style="padding: 16px 0px; text-align: center;">
-				<form id="search" action="<?= $baseurl ?>/index.php">
+				<form id="search" action="<?= $baseurl ?>/search/">
 					<input id="frontGameSearch" name="string" type="text" style="height: 30px; padding: 0px; width: 440px; font-family: 'Segoe UI','HelveticaNeue-Light','Helvetica Neue Light','Helvetica Neue',Arial,Tahoma,Verdana,sans-serif; font-size: 20px; text-shadow: 0px 2px 6px #666; color: #333; background: url(<?php echo $baseurl; ?>/images/common/bg_glass.png) no-repeat center center; color: #fff;  border: 1px solid #eee;" />
 					<input type="submit" value="Search" style="height: 30px; width: 100px; vertical-align: 2px; padding: 0px; font-size: 18px; text-shadow: 0px 2px 6px #666; color: #fff; background: url(<?php echo $baseurl; ?>/images/common/bg_glass.png) no-repeat center center; border-radius: 6px; border: 1px solid #eee;" />
-					<input type="hidden" name="tab" value="listseries" />
 					<input type="hidden" name="function" value="Search" />
 				</form>
 			</div>

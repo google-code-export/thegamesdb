@@ -61,15 +61,6 @@
                 </td>
             </tr>
             <tr>
-                <td><b>Favorites Display Mode</b></td>
-                <td>
-                    <select name="favorites_displaymode" size="1">
-                        <option value="banners" <?php if ($user->favorites_displaymode == "banners") print "selected"; ?>>Banners
-                        <option value="text" <?php if ($user->favorites_displaymode == "text") print "selected"; ?>>Text
-                    </select>
-                </td>
-            </tr>
-            <tr>
                 <td><b>Account Identifier</b></td>
                 <td><input type="text" name="form_uniqueid" value="<?=$user->uniqueid?>" readonly></td>
             </tr>

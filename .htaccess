@@ -14,10 +14,13 @@ RewriteRule ^game/([0-9]+)(/?)$ index.php?tab=game&id=$1 [NC,QSA,L]
 RewriteRule ^game-edit/([0-9]+)(/?)$ index.php?tab=game-edit&id=$1 [NC,QSA,L]
 
 
-#### SEARCH PAGE
+#### SEARCH PAGE (WITH SEARCH STRING)
 ## http://thegamesdb.net/index.php?string={Sonic+the+Hedgehog}&tab=listseries&function=Search => http://thegamesdb.net/search/{Sonic+the+Hedgehog/}
 RewriteRule ^search/([a-z0-9\-\ \+]+)(/?)$ index.php?tab=listseries&string=$1&function=Search [NC,QSA,L]
 
+#### SEARCH PAGE (WITH ANY ADDITIONAL PARAMETERS)
+## http://thegamesdb.net/index.php?tab=listseries&function=Search => http://thegamesdb.net/search/}
+RewriteRule ^search(/?)$ index.php?tab=listseries&function=Search [NC,QSA,L]
 
 #### BROWSE PAGE
 ## http://thegamesdb.net/index.php?tab=listplatform => http://thegamesdb.net/browse/
