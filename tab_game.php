@@ -555,14 +555,14 @@
 									<?php
 								}
 								?>
-								<p>If you know this game exists on another platform, why not <a href="<?=$baseurl?>?tab=addgame&passTitle=<?=$game->GameTitle?>">add it</a>.</p>
+								<p>If you know this game exists on another platform, why not <a href="<?=$baseurl?>?tab=addgame&passTitle=<?=urlencode($game->GameTitle)?>">add it</a>.</p>
 								<?php
 							}
 							else
 							{
 								?>
 								<p>There are currently no other platforms that have this game yet...</p>
-								<p>If you know of one, why not <a href="<?=$baseurl?>?tab=addgame&passTitle=<?=$game->GameTitle?>">add it</a>.</p>
+								<p>If you know of one, why not <a href="<?=$baseurl?>?tab=addgame&passTitle=<?=urlencode($game->GameTitle)?>">add it</a>.</p>
 								<?php
 							}
 						?>
