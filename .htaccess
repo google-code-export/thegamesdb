@@ -46,6 +46,23 @@ RewriteRule ^favorites(/?)$ index.php?tab=favorites [NC,QSA,L]
 RewriteRule ^adminstats/([a-z0-9\-]+)(/?)$ index.php?tab=adminstats&statstype=$1 [NC,QSA,L]
 
 
+#### BLOG/NEWS (WordPress)
+# http://www.thegamesdb.net/blog => http://thegamesdb.net/blog/
+RewriteRule ^blog(/?)$ blog/ [NC,QSA,L]
+
+
 #### BASIC TAB REWRITING (MUST BE LAST RULE)
 # http://www.thegamesdb.net/?tab={tab-value} => http://thegamesdb.net/{tab-value}/
 RewriteRule ^([a-z0-9\-\ \+]+)(/?)$ index.php?tab=$1 [NC,QSA,L]
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress

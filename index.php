@@ -241,6 +241,41 @@ if ($updateview == "yes")
 	}
 }
 
+// Function to share page via email
+if($function == "Share via Email")
+{
+	// Check that captcha is completed and matches
+	if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['captcha']) && $_POST['captcha'] == $_SESSION['captcha'])
+	{
+		##Make userinput safe
+		$fromname = mysql_real_escape_string($fromname);
+		$fromaddress = mysql_real_escape_string($fromaddress);
+		$toaddress = mysql_real_escape_string($toaddress);
+		$url = mysql_real_escape_string($url);
+		
+		## Email it to the user
+		$from = "$fromname <$fromaddress>";
+		$host = $mail_server;
+		$to = "'$toaddress <$toaddress>";
+		$subject = "TheGamesDB.net - $fromname has shared a link with you";
+		if($messagecontent != false)
+		{
+			$quote = "Message From Your Friend:\n\"$messagecontent\"\n\n";
+		}
+		$emailmessage = "TheGamesDB.net \n\n$fromname visited thegamesdb.net and wanted to share a link with you \n\n$quote\nYour Link Details:\n$urlsubject: $url \n\nWe hope you enjoy your visit with us, \n\nTheGamesDB.net Crew.";
+		$headers = 'From: ' . $from;
+		mail($to, $subject, wordwrap($emailmessage, 70), $headers);
+		
+		// Display success message and finish up session
+		$message = "Message Sent to $toaddress!";
+		unset($_SESSION['captcha']); /* this line makes session free, we recommend you to keep it */
+	} 
+	elseif($_SERVER['REQUEST_METHOD'] == "POST" && !isset($_POST['captcha']))
+	{
+		$errormessage = "Message was not sent, captcha didn't pass...<br />Please try again and remember to complete the captcha!";
+	}
+}
+
 /*
  * Game Functions
  */
@@ -1311,12 +1346,10 @@ if($tab != "mainmenu")
 		
         <link rel="stylesheet" type="text/css" href="<?php echo $baseurl; ?>/js/ckeditor/assets/output_xhtml.css" />
         <link rel="stylesheet" href="http://colourlovers.com.s3.amazonaws.com/COLOURloversColorPicker/COLOURloversColorPicker.css" type="text/css" media="all" />
-        <!--<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/themes/base/jquery-ui.css" type="text/css" media="all" />-->
         <link rel="stylesheet" href="<?php echo $baseurl; ?>/js/jquery-ui/css/trontastic/jquery-ui-1.8.14.custom.css" type="text/css" media="all" />
 
         <script type="text/JavaScript" src="http://colourlovers.com.s3.amazonaws.com/COLOURloversColorPicker/js/COLOURloversColorPicker.js"></script>
         <script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-        <!--<script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>-->
         <script type="text/JavaScript" src="<?php echo $baseurl; ?>/js/jquery-ui/js/jquery-ui-1.8.14.custom.min.js"></script>
 		
 		<!-- Start AnythingSlider Include -->
@@ -1668,6 +1701,12 @@ if($tab != "mainmenu")
 				<div id="theTeam" style="padding-top: 5px; padding-right: 25px; float: right; font-family: 'Segoe UI','HelveticaNeue-Light','Helvetica Neue Light','Helvetica Neue',Arial,Tahoma,Verdana,sans-serif; font-size: 14px; text-shadow: 0px 2px 6px #666;">
 					<a rel="facebox" href="#credits" style="color: #333;">TheGamesDB Team</a>
 				</div>
+				
+				<div style="padding-top: 4px;">
+					<a href="http://www.facebook.com/thegamesdb" target="_blank"><img src="<?= $baseurl ?>/images/common/icons/social/24/facebook_dark.png" alt="Visit us on Facebook" title="Visit us on Facebook" onmouseover="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/facebook_active.png')" onmouseout="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/facebook_dark.png')" /></a>
+					<a href="http://twitter.com/thegamesdb" target="_blank"><img src="<?= $baseurl ?>/images/common/icons/social/24/twitter_dark.png" alt="Visit us on Twitter" title="Visit us on Twitter" onmouseover="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/twitter_active.png')" onmouseout="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/twitter_dark.png')" /></a>
+					<a href="https://plus.google.com/116977810662942577082/posts" target="_blank"><img src="<?= $baseurl ?>/images/common/icons/social/24/google_dark.png" alt="Visit us on Google Plus" title="Visit us on Google Plus"  onmouseover="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/google_active.png')" onmouseout="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/google_dark.png')" /></a>
+				</div>
 			</div>
 		</div>
 		
@@ -1940,7 +1979,7 @@ else
 			</div>
 			
 			<div id="frontnav" style="font-family: 'Segoe UI','HelveticaNeue-Light','Helvetica Neue Light','Helvetica Neue',Arial,Tahoma,Verdana,sans-serif; font-size: 20px; text-shadow: 0px 2px 6px #666; color: #fff;">
-				<div style="width: 76px; padding: 10px; float: left; text-align: center;"><a href="<?=$baseur?>/news/">News</a></div>
+				<div style="width: 76px; padding: 10px; float: left; text-align: center;"><a href="<?=$baseur?>/blog/">Blog</a></div>
 				<div style="width: 76px; padding: 10px; float: left; text-align: center;"><a href="<?=$baseur?>/browse/">Browse</a></div>
 				<div style="width: 100px; padding: 10px; float: left; text-align: center;"><a href="<?=$baseur?>/addgame/">Add Game</a></div>
 				<div style="width: 76px; padding: 10px; float: left; text-align: center;"><a href="<?=$baseur?>/stats/">Stats</a></div>
@@ -1964,6 +2003,7 @@ else
 	<div id="footer" style="position:absolute; width: 100%; bottom:0px; z-index: 200; text-align: center;">
 		<div id="footerbarShadow" style="width: 100%; background: url(<?php echo $baseurl; ?>/images/bg_footerbar-shadow.png) repeat-x center center; height: 15px;"></div>
 		<div id="footerbar" style="width: 100%; background: url(<?php echo $baseurl; ?>/images/bg_footerbar.png) repeat-x center center; height: 30px;">
+		
 			<div id="Terms" style="padding-top: 5px; padding-left: 25px; float: left; font-family: 'Segoe UI','HelveticaNeue-Light','Helvetica Neue Light','Helvetica Neue',Arial,Tahoma,Verdana,sans-serif; font-size: 14px; text-shadow: 0px 2px 6px #666;">
 				<a href="<?=$baseurl?>/terms/" style="color: #333;">Terms &amp; Conditions</a>
 			</div>
@@ -1971,6 +2011,14 @@ else
 			<div id="theTeam" style="padding-top: 5px; padding-right: 25px; float: right; font-family: 'Segoe UI','HelveticaNeue-Light','Helvetica Neue Light','Helvetica Neue',Arial,Tahoma,Verdana,sans-serif; font-size: 14px; text-shadow: 0px 2px 6px #666;">
 				<a rel="facebox" href="#credits" style="color: #333;">TheGamesDB Team</a>
 			</div>
+			
+			<div style="padding-top: 4px;">
+			<a href="http://www.facebook.com/thegamesdb" target="_blank"><img src="<?= $baseurl ?>/images/common/icons/social/24/facebook_dark.png" alt="Visit us on Facebook" title="Visit us on Facebook" onmouseover="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/facebook_active.png')" onmouseout="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/facebook_dark.png')" /></a>
+			<a href="http://twitter.com/thegamesdb" target="_blank"><img src="<?= $baseurl ?>/images/common/icons/social/24/twitter_dark.png" alt="Visit us on Twitter" title="Visit us on Twitter" onmouseover="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/twitter_active.png')" onmouseout="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/twitter_dark.png')" /></a>
+			<a href="https://plus.google.com/116977810662942577082/posts" target="_blank"><img src="<?= $baseurl ?>/images/common/icons/social/24/google_dark.png" alt="Visit us on Google Plus" title="Visit us on Google Plus"  onmouseover="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/google_active.png')" onmouseout="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/google_dark.png')" /></a>
+			<a href="<?= $baseurl; ?>/mailshare.php?urlsubject=<?= urlencode("TheGamesDB.net - Home"); ?>&url=<?= urlencode($baseurl); ?>" rel="facebox"><img src="<?= $baseurl ?>/images/common/icons/social/24/share_dark.png" alt="Share via Email" title="Share via Email" onmouseover="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/share_active.png')" onmouseout="$(this).attr('src', '<?= $baseurl ?>/images/common/icons/social/24/share_dark.png')" /></a>
+			</div>
+			
 		</div>
 	</div>
 	

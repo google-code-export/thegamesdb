@@ -112,6 +112,42 @@
 				<span id ="gameUserLinks"><a href="<?=$baseurl?>/platform-edit/<?=$platform->id?>/"><img src="<?php echo $baseurl; ?>/images/common/icons/edit_128.png" style="width:16px; height: 16px; vertical-align: middle;" /></a>&nbsp;<a href="<?=$baseurl?>/platform-edit/<?=$platform->id?>/">Edit this Platform</a></span>
 			<?php } ?><br /><br />
 			
+			<span style="float: right; padding-top: 16px;">
+				
+				<!-- Google plus share button -->
+				<span style="float: right;">
+				<!-- Place this tag where you want the +1 button to render -->
+				<g:plusone size="medium"></g:plusone>
+
+				<!-- Place this render call where appropriate -->
+				<script type="text/javascript">
+				  (function() {
+					var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+					po.src = 'https://apis.google.com/js/plusone.js';
+					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+				  })();
+				</script>
+				</span>
+				
+				<!-- Twitter share button -->
+				<span style="float: right;">
+				<a href="https://twitter.com/share" class="twitter-share-button" data-url="<?= "$baseurl/platform/$platform->id/" ?>" data-text="<?= "$platform->name on TheGamesDB.net" ?>" data-count="horizontal" data-via="thegamesdb">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+				</span>
+				
+				<!-- Facebook share button -->
+				<span style="float: right; padding-top: 1px;">
+				<a name="fb_share"></a> 
+				<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" 
+						type="text/javascript">
+				</script>
+				&nbsp;
+				</span>
+				
+				<!-- Share via Email button -->
+				<a href="<?= $baseurl; ?>/mailshare.php?urlsubject=<?= urlencode("TheGamesDB.net - $platform->name"); ?>&url=<?= urlencode("$baseurl/platform/$platform->id/"); ?>" rel="facebox" style="float: right; margin-right: 10px; padding: 1px 6px 1px 3px; color: #fff; text-decoration: none; background-color: #333; border: 1px solid #444; border-radius: 3px; font-size: 11px; font-weight: bold;" onmouseover="$('#mailIcon').attr('src', '<?= $baseurl ?>/images/common/icons/social/24/share_active.png')" onmouseout="$('#mailIcon').attr('src', '<?= $baseurl ?>/images/common/icons/social/24/share_dark.png')"><img id="mailIcon" src="<?= $baseurl ?>/images/common/icons/social/24/share_dark.png" alt="Share via Email" title="Share via Email" style="vertical-align: middle; width: 18px; height: 18px;" />&nbsp;Share via Email</a>
+				
+			</span>
+			
 			<h1 style="margin: 0px; padding: 0px;"><img src="<?php echo $baseurl; ?>/images/common/consoles/png48/<?php echo $platform->icon; ?>" alt="<?php echo $platform->name; ?>" title="<?php echo $platform->name; ?>" style="vertical-align: middle;" />&nbsp;<?php echo $platform->name; ?></h1>
 			<?php if(!empty($game->Alternates)) { ?>
 				<h3><span style="color: #888; font-size: 13px;"><em>
