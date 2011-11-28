@@ -40,6 +40,9 @@ RewriteRule ^platform-edit/([0-9]+)(/?)$ index.php?tab=platform-edit&id=$1 [NC,Q
 #### FAVORITES PAGE
 RewriteRule ^favorites(/?)$ index.php?tab=favorites [NC,QSA,L]
 
+#### MESSAGE PAGE
+## http://thegamesdb.net/?tab=message&id={90} => http://thegamesdb.net/message/{90}/
+RewriteRule ^message/([0-9]+)(/?)$ index.php?tab=message&messageid=$1 [NC,QSA,L]
 
 #### ADMINSTATS PAGE (TO-DO: FLESH OUT WITH ALL STATS PERMIATATIONS)
 ## http://thegamesdb.net/?tab=adminstats&statstype={topratedgames} => http://thegamesdb.net/adminstats/{top-rated-games}

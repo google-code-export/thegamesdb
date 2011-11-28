@@ -1,7 +1,23 @@
-<div class="section">
-    <h1>User Information | <?=$user->username?></h1>
+<div id="gameWrapper">
+	<div id="gameHead">
+	
+	<?php if($errormessage): ?>
+	<div class="error"><?= $errormessage ?></div>
+	<?php endif; ?>
+	<?php if($message): ?>
+	<div class="message"><?= $message ?></div>
+	<?php endif; ?>
+
+<?php
+if($loggedin == 1)
+{
+?>
+	
+<h1>User Information | <?=$user->username?></h1>
+<div style="width: 640px; margin: auto;">
+	<p>&nbsp;</p>
 	<div style="float:left;">
-		<form style="padding: 14px; border: 1px solid #999; background-color: #E6E6E6;" method="post" action="<?= $baseurl; ?>/userinfo/" enctype="multipart/form-data">
+		<form style="padding: 14px; border: 1px solid #999; background-color: #333;" method="post" action="<?= $baseurl; ?>/userinfo/" enctype="multipart/form-data">
 		<h2>User Image...</h2>
 		<?php
 		$filename = glob("banners/users/" . $comments->userid . "*.jpg");
@@ -73,4 +89,19 @@
     </form>
 
 	<div style="clear: both;"></div>
+</div>
+
+<?php
+}
+else
+{
+?>
+	<h1>Oops!</h1>
+		<h2 style="text-align: center;">You must be logged in to access your user settings!</h2>
+		<p style="text-align: center;">If you haven't already, please make an account with us and then log in.</p>
+		<p style="text-align: center;"><a href="<?= $baseurl; ?>/login/" style="color: orange;">Click here to log in</a></p>
+<?php
+}
+?>
+	</div>
 </div>

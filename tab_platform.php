@@ -86,10 +86,10 @@
 ?>
 
 <?php
-	// Fetch Game Information from DB
+	// Fetch Platform Information from DB
 	$id = mysql_real_escape_string($id);
 	$query	= "SELECT p.* FROM platforms as p WHERE p.id=$id";
-	$result = mysql_query($query) or die('Fetch Game Info Query Failed: ' . mysql_error());
+	$result = mysql_query($query) or die('Fetch Platform Info Query Failed: ' . mysql_error());
 	$rows = mysql_num_rows($result);
 	$platform = mysql_fetch_object($result);
 ?>
@@ -103,6 +103,11 @@
 	<?php if($message): ?>
 	<div class="message"><?= $message ?></div>
 	<?php endif; ?>
+	
+	<?php
+	if(mysql_num_rows($result) != 0)
+	{
+	?>
 	
 		<div id="gamePlatformIcon">
 		</div>
@@ -608,3 +613,18 @@
 	function scrollableElement(els) {    for (var i = 0, argLength = arguments.length; i <argLength; i++) {      var el = arguments[i],          $scrollElement = $(el);      if ($scrollElement.scrollTop()> 0) {        return el;      } else {        $scrollElement.scrollTop(1);        var isScrollable = $scrollElement.scrollTop()> 0;        $scrollElement.scrollTop(0);        if (isScrollable) {          return el;        }      }    }    return [];  }});
 </script>
 <!-- End jQuery Smooth Vertical Page Scrolling -->
+
+<?php
+	}
+	else
+	{
+?>
+		<h1>Oops!</h1>
+		<h2 style="text-align: center;">We can't find the platform you requested...</h2>
+		<p style="text-align: center;">If you believe you have recieved this message in error, please let us know.</p>
+		<p style="text-align: center;"><a href="<?= $baseurl; ?>/" style="color: orange;">Click here to return to the homepage</a></p>
+	</div>
+</div>
+<?php
+	}
+?>

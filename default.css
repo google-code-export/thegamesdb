@@ -21,11 +21,11 @@ h2{
 }
 
 .bgBlack {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#777777', EndColorStr='#131313');
-	background-image: -moz-linear-gradient(top, #777777, #131313);
-	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #777777),color-stop(1, #131313));
-	background-image: -webkit-linear-gradient(#777777, #131313);
-	background-image: linear-gradient(top, #777777, #131313);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#444444', EndColorStr='#131313');
+	background-image: -moz-linear-gradient(top, #444444, #131313);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #444444),color-stop(1, #131313));
+	background-image: -webkit-linear-gradient(#444444, #131313);
+	background-image: linear-gradient(top, #444444, #131313);
 }
 #frontHeader{
 	color: #fff;

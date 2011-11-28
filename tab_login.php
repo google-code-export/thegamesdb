@@ -1,5 +1,17 @@
-<div style="text-align: center;">
+<div id="gameWrapper">
+	<div id="gameHead">
+
+	<?php if($errormessage): ?>
+	<div class="error"><?= $errormessage ?></div>
+	<?php endif; ?>
+	<?php if($message): ?>
+	<div class="message"><?= $message ?></div>
+	<?php endif; ?>
+	
+<div style="text-align: center; padding: 24px 0px;">
 <h1>User Login</h1>
+<p>&nbsp;</p>
+<p>Please fill in your details below to register for an account.</p>
 <form action="<?=$baseurl;?>/" method="POST">
 
 <table cellspacing="2" cellpadding="2" border="0" align="center">
@@ -25,7 +37,10 @@
 </form>
 
 
-<a href="<?php echo $baseurl;?>/register/">Register for an account</a> <br>
-<a href="<?php echo $baseurl;?>/password/">Forgot your username or password?</a>
+<a href="<?php echo $baseurl;?>/register/" style="color: orange">Register for an account</a> <br>
+<a href="<?php echo $baseurl;?>/password/" style="color: orange">Forgot your username or password?</a>
 
+</div>
+
+	</div>
 </div>

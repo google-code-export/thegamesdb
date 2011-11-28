@@ -276,6 +276,33 @@ if($function == "Share via Email")
 	}
 }
 
+if ($function == 'Send PM') {
+	$toQuery = mysql_query(" SELECT id FROM users WHERE username = '$pmto' LIMIT 1");
+	$to = mysql_fetch_object($toQuery);
+
+	$pmmessage = htmlspecialchars($pmmessage, ENT_QUOTES);
+	
+	if(mysql_query(" INSERT INTO messages (`from`, `to`, `subject`, `message`, `status`, `timestamp`) VALUES ('$user->id', '$to->id', '$pmsubject', '$pmmessage', 'new', FROM_UNIXTIME($time)); ") or die(mysql_error()))
+	{
+		$message = "PM Sent to \"$pmto\" Successfully";
+	}
+	else
+	{
+		$errormessage = "Oops! There was a problem sending your message,<br />Please try again...";
+	}
+}
+
+if ($function == 'Delete PM') {
+	if(mysql_query(" DELETE FROM messages WHERE messages.id = $pmid AND messages.to = '$user->id' "))
+	{
+		$message = "Your message was deleted.";
+	}
+	else
+	{
+		$errormessage = "There was a problem deleting your message,<br />Please try again...";
+	}
+}
+
 /*
  * Game Functions
  */
@@ -1340,7 +1367,7 @@ if($tab != "mainmenu")
 		
         <link rel="stylesheet" type="text/css" href="<?php echo $baseurl; ?>/default.css" />
 		
-		<?php if ($tab == "game" || $tab == "game-edit" || $tab == "platform" || $tab == "platform-edit") { ?>
+		<?php if ($tab == "game" || $tab == "game-edit" || $tab == "platform" || $tab == "platform-edit" || $tab == "messages" || $tab == "message" || $tab == "favorites" || $tab == "listseries" || $tab == "listplatform" || $tab == "addgame" || $tab == "login" || $tab == "register" || $tab == "password" || $tab == "userinfo") { ?>
 			<link rel="stylesheet" type="text/css" href="<?php echo $baseurl; ?>/gamenew.css" />
 		<?php } ?>
 		
@@ -1615,7 +1642,9 @@ if($tab != "mainmenu")
 			<div id="frontBanner" style="width: 880px; margin: auto;">
 				<p style="position: absolute; top: 10px; right: 15px; font-family:Arial; font-size:10pt; margin: 0px; padding: 0px;">
 					<?php if ($loggedin) {
-						?><a href="<?= $baseurl ?>/favorites/">Favorites (<?php if($user->favorites != ""){ echo count(explode(",", $user->favorites)); } else{ echo "0"; } ?>)</a> <span style="color: #ccc;">|</span> <?php if ($adminuserlevel == 'ADMINISTRATOR') { ?> <a href="<?= $baseurl ?>/admincp/">Admin Control Panel</a> <?php } else { ?><a href="<?= $baseurl ?>/userinfo/">My User Info</a><?php } ?> <span style="color: #ccc;">|</span> <a href="<?= $baseurl ?>/?function=Log Out">Logout</a>
+						$msgQuery = mysql_query(" SELECT id FROM messages WHERE status = 'new' AND messages.to = '$user->id' ");
+						$msgCount = mysql_num_rows($msgQuery);
+					?><a href="<?= $baseurl ?>/messages/">Messages (<?= $msgCount; ?>)</a> <span style="color: #ccc;">|</span> <a href="<?= $baseurl ?>/favorites/">Favorites (<?php if($user->favorites != ""){ echo count(explode(",", $user->favorites)); } else{ echo "0"; } ?>)</a> <span style="color: #ccc;">|</span> <?php if ($adminuserlevel == 'ADMINISTRATOR') { ?> <a href="<?= $baseurl ?>/admincp/">Admin Control Panel</a> <?php } else { ?><a href="<?= $baseurl ?>/userinfo/">My User Info</a><?php } ?> <span style="color: #ccc;">|</span> <a href="<?= $baseurl ?>/?function=Log Out">Logout</a>
 					<?php } else { ?>
 						<a href="<?= $baseurl ?>/login/">Login</a> <span style="color: #ccc;">|</span> New to the site? <a href="<?= $baseurl ?>/register/">Register here!</a>
 					<?php } ?>
@@ -1936,7 +1965,9 @@ else
 		<div id="frontBanner" style="width: 880px; margin: auto;">
 			<p style="position: absolute; top: 10px; right: 15px; font-family:Arial; font-size:10pt;">
 				<?php if ($loggedin) {
-					?><a href="<?= $baseurl ?>/favorites/">Favorites (<?php if($user->favorites != ""){ echo count(explode(",", $user->favorites)); } else{ echo "0"; } ?>)</a> <span style="color: #ccc;">|</span> <?php if ($adminuserlevel == 'ADMINISTRATOR') { ?> <a href="<?= $baseurl ?>/admincp/">Admin Control Panel</a> <?php } else { ?><a href="<?= $baseurl ?>/userinfo/">My User Info</a><?php } ?> <span style="color: #ccc;">|</span> <a href="<?= $baseurl ?>/?function=Log Out">Logout</a>
+					$msgQuery = mysql_query(" SELECT id FROM messages WHERE status = 'new' AND messages.to = '$user->id' ");
+					$msgCount = mysql_num_rows($msgQuery);
+					?><a href="<?= $baseurl ?>/messages/">Messages (<?= $msgCount; ?>)</a> <span style="color: #ccc;">|</span> <a href="<?= $baseurl ?>/favorites/">Favorites (<?php if($user->favorites != ""){ echo count(explode(",", $user->favorites)); } else{ echo "0"; } ?>)</a> <span style="color: #ccc;">|</span> <?php if ($adminuserlevel == 'ADMINISTRATOR') { ?> <a href="<?= $baseurl ?>/admincp/">Admin Control Panel</a> <?php } else { ?><a href="<?= $baseurl ?>/userinfo/">My User Info</a><?php } ?> <span style="color: #ccc;">|</span> <a href="<?= $baseurl ?>/?function=Log Out">Logout</a>
 				<?php } else { ?>
 					<a href="<?= $baseurl ?>/login/">Login</a> <span style="color: #ccc;">|</span> New to the site? <a href="<?= $baseurl ?>/register/">Register here!</a>
 				<?php } ?>

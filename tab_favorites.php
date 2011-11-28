@@ -31,6 +31,17 @@ function imageResize($filename, $cleanFilename, $target)
 	return "src=\"$baseurl/$cleanFilename\"";
 }
 ?>
+
+<div id="gameWrapper">
+	<div id="gameHead">
+	
+	<?php if($errormessage): ?>
+	<div class="error"><?= $errormessage ?></div>
+	<?php endif; ?>
+	<?php if($message): ?>
+	<div class="message"><?= $message ?></div>
+	<?php endif; ?>
+
 <?php
 	if ($loggedin == 1) {
 ?>
@@ -51,9 +62,9 @@ function imageResize($filename, $cleanFilename, $target)
 		$counter = 0;
 		$favoritesArray = explode(",", $user->favorites);
 		?>
-			<div style="text-align: center; width: 800px; padding: 15px; margin:30px auto; background-color: #eee; border: 1px solid #666;">
+			<div style="text-align: center; width: 800px; padding: 15px; margin:30px auto; background-color: #eee; border: 1px solid #666; color: #333 !important;">
 				<div>
-					<h2 class="arcade" style="float: left;"><?=$user->username?>'s Favorites</h2>
+					<h1 style="float: left; text-transform: capitalize;"><?=$user->username?>'s Favorites</h1>
 					<div style="width: 80px; text-align: center; float: right;">
 						<a href="<?=$baseurl?>/favorites/?favoritesview=table&updateview=yes"><img src="<?=$baseurl?>/images/common/icons/viewicons/table.png" alt="table"/></a>
 						<p style="margin-top: 2px;"><a href="<?=$baseurl?>/favorites/?favoritesview=table&updateview=yes" style="color: #dd4400">Table</a></p>
@@ -386,7 +397,7 @@ function imageResize($filename, $cleanFilename, $target)
 	}
 ?>
 				<div style="clear: both;"></div>
-				<h3 class="arcade" style="color: #ff6600;">Total Favorites: <?=count($favoritesArray)?></h3>
+				<h3 style="color: #ff6600;">Total Favorites: <?=count($favoritesArray)?></h3>
 				
 			</div>
 </div>
@@ -395,10 +406,12 @@ function imageResize($filename, $cleanFilename, $target)
 	else
 	{
 	?>
-		<div>
-			<h2>Whoops!</h2>
-			<p>You must be logged in to view your favorites.</p>
-		</div>
+		<h1>Oops!</h1>
+			<h2 style="text-align: center;">You must be logged in to access your favorites!</h2>
+			<p style="text-align: center;">If you haven't already, please make an account with us and then log in.</p>
+			<p style="text-align: center;"><a href="<?= $baseurl; ?>/login/" style="color: orange;">Click here to log in</a></p>
 	<?php
 	}
 ?>
+	</div>
+</div>

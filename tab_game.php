@@ -104,6 +104,11 @@
 	<div class="message"><?= $message ?></div>
 	<?php endif; ?>
 	
+	<?php
+	if(mysql_num_rows($result) != 0)
+	{
+	?>
+	
 		<div id="gameTitle">
 			<?php	if ($loggedin == 1) {  ?>
 				<span id ="gameUserLinks"><a href="<?=$baseurl?>?tab=game-edit&id=<?=$game->id?>"><img src="<?php echo $baseurl; ?>/images/common/icons/edit_128.png" style="width:16px; height: 16px; vertical-align: middle;" /></a>&nbsp;<a href="<?=$baseurl?>/game-edit/<?=$game->id?>/">Edit this Game</a>&nbsp;&nbsp;|&nbsp;
@@ -933,3 +938,18 @@
 	function scrollableElement(els) {    for (var i = 0, argLength = arguments.length; i <argLength; i++) {      var el = arguments[i],          $scrollElement = $(el);      if ($scrollElement.scrollTop()> 0) {        return el;      } else {        $scrollElement.scrollTop(1);        var isScrollable = $scrollElement.scrollTop()> 0;        $scrollElement.scrollTop(0);        if (isScrollable) {          return el;        }      }    }    return [];  }});
 </script>
 <!-- End jQuery Smooth Vertical Page Scrolling -->
+
+<?php
+	}
+	else
+	{
+?>
+		<h1>Oops!</h1>
+		<h2 style="text-align: center;">We can't find the game you requested...</h2>
+		<p style="text-align: center;">If you believe you have recieved this message in error, please let us know.</p>
+		<p style="text-align: center;"><a href="<?= $baseurl; ?>/" style="color: orange;">Click here to return to the homepage</a></p>
+	</div>
+</div>
+<?php
+	}
+?>

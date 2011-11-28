@@ -170,6 +170,11 @@
 	<div class="message"><?= $message ?></div>
 	<?php endif; ?>
 	
+	<?php
+	if(mysql_num_rows($result) != 0)
+	{
+	?>
+	
 	<form id="editPlatformForm" name="editPlatformForm" action="<?= $baseurl ?>/platform-edit/<?= $platform->id ?>/" method="post" onsubmit="">
 
 		<div id="gameTitle">
@@ -717,6 +722,23 @@
 </script>
 <!-- End jQuery Smooth Vertical Page Scrolling -->
 
+
+<?php
+	}
+	else
+	{
+?>
+		<h1>Oops!</h1>
+		<h2 style="text-align: center;">We can't find the platform you requested...</h2>
+		<p style="text-align: center;">If you believe you have recieved this message in error, please let us know.</p>
+		<p style="text-align: center;"><a href="<?= $baseurl; ?>/" style="color: orange;">Click here to return to the homepage</a></p>
+	</div>
+</div>
+<?php
+	}
+?>
+
+
 <?php
 	}
 	//<END> IF LOGGED IN
@@ -726,11 +748,12 @@
 ?>
 	<div id="gameWrapper">
 		<div id="gameHead">
-			<div style="text-align: center; padding: 50px 0px;">
-				<h2>Whoops!</h2>
-				<p>You must have an administrator account and be logged in to edit platform information...</p>
-				<p><a style="color: gold;" href="<?= $baseurl ?>/login/">Click here to be taken to the login page.</a></p>
-			</div>
+			
+			<h1>Oops!</h1>
+			<h2 style="text-align: center;">You must be logged in and be an administrator to edit a platform!</h2>
+			<p style="text-align: center;">If you haven't already, please make an account with us and then log in.</p>
+			<p style="text-align: center;"><a href="<?= $baseurl; ?>/login/" style="color: orange;">Click here to log in</a></p>
+			
 		</div>
 	</div>
 <?php } ?>

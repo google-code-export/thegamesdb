@@ -226,7 +226,17 @@ function imageResize($filename, $cleanFilename, $target)
 	?>
 	<!-- End Pagination -->
 
-<h1 style="float: left;">Search: <?=$string?></h1>
+<div id="gameWrapper">
+	<div id="gameHead">
+	
+	<?php if($errormessage): ?>
+	<div class="error"><?= $errormessage ?></div>
+	<?php endif; ?>
+	<?php if($message): ?>
+	<div class="message"><?= $message ?></div>
+	<?php endif; ?>
+	
+	<h1 style="float: left;">Search: <?=$string?></h1>
 
 	<!-- Start View Mode Links -->
 	<div>
@@ -377,7 +387,7 @@ function imageResize($filename, $cleanFilename, $target)
 		$increment = "odd";
 		$counter = 0;
 		?>
-			<div class="bgBlack" style="text-align: center; width: 800px; padding: 15px; margin:30px auto; background-color: #eee; border: 1px solid #666;">
+			<div class="bgBlack" style="text-align: center; width: 800px; padding: 15px; margin:30px auto; background-color: #eee; border: 1px solid #666; color: #333;">
 			
 	<!-- Start Show Pagination -->
 	<?=$pagination?>
@@ -687,3 +697,6 @@ function imageResize($filename, $cleanFilename, $target)
 		<!-- End Show Pagination -->
 		
 		</div>
+		
+	</div>
+</div>
