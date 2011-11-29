@@ -549,13 +549,13 @@
 						if(mysql_num_rows($bannerResult) > 0)
 						{
 						?>
-							<div id="bannerSlider" class="nivoSlider">
+							<div id="bannerSlider" class="nivoSlider" style="width:760px important; height: 140px !important;">
 						<?php
 							$bannerSlideCount = 0;
 							while($banner = mysql_fetch_array($bannerResult))
 							{	
 						?>
-								<img class="bannerSlide" src="<?="$baseurl/banners/$banner[filename]"?>" alt="<?php echo $game->GameTitle; ?> Banner" />
+								<img class="bannerSlide" src="<?="$baseurl/banners/$banner[filename]"?>" width="760" height="140" alt="<?php echo $game->GameTitle; ?> Banner" />
 						<?php
 								$bannerSlideCount++;
 							}
@@ -645,7 +645,7 @@
 					?>
 								<div class="comment">
 								<?php
-								$filename = glob("banners/users/" . $comments->userid . "*.jpg");
+								$filename = glob("banners/users/" . $comments->userid . "-*.jpg");
 								if(file_exists($filename[0]))
 								{
 								?>
@@ -680,7 +680,7 @@
 					?>
 							<div class="comment">
 								<?php
-								$filename = glob("banners/users/" . $comments->userid . "*.jpg");
+								$filename = glob("banners/users/" . $comments->userid . "-*.jpg");
 								if(file_exists($filename[0]))
 								{
 								?>
@@ -713,7 +713,7 @@
 					?>
 							<div class="comment">
 								<?php
-								$filename = glob("banners/users/" . $comments->userid . "*.jpg");
+								$filename = glob("banners/users/" . $comments->userid . "-*.jpg");
 								if(file_exists($filename[0]))
 								{
 								?>
@@ -742,7 +742,7 @@
 					?>
 							<div class="comment">
 								<?php
-								$filename = glob("banners/users/" . $comments->userid . "*.jpg");
+								$filename = glob("banners/users/" . $comments->userid . "-*.jpg");
 								if(file_exists($filename[0]))
 								{
 								?>

@@ -45,7 +45,7 @@ if (isset($function) && $function == "Edit Publisher Keywords")
 						<form style="padding: 14px; border: 1px solid #999; background-color: #E6E6E6;" method="post" action="<?= $baseurl; ?>/admincp/" enctype="multipart/form-data">
 						<h2>User Image...</h2>
 						<?php
-						$filename = glob("banners/users/" . $comments->userid . "*.jpg");
+						$filename = glob("banners/users/" . $user->id . "-*.jpg");
 						if(file_exists($filename[0]))
 						{
 						?>

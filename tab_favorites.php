@@ -50,10 +50,11 @@ function imageResize($filename, $cleanFilename, $target)
 	if($user->favorites == "")
 	{
 	?>
-		<div style="text-align: center; width: 500px; padding: 15px; margin:30px auto; background-color: #eee; border: 1px solid #666;">
-			<h3><em>Whoops!</em> You haven't added any favorites yet.</h3>
+		<div style="text-align: center;">
+			<h1 style="text-align: left; text-transform: capitalize;"><?=$user->username?>'s Favorites</h1>
+			<p>&nbsp;</p>
+			<h2><em>Oops!</em> You haven't added any favorites yet.</h2>
 			<p>Consider visiting some games pages and favoriting some.</p>
-		</div>
 	<?php
 	}
 	else

@@ -18,7 +18,7 @@
 				<p><a href="<?= $baseurl; ?>/api/methods/" style="color: orange">API Methods</a></p>
 				<p><a href="http://code.google.com/p/thegamesdb/w/list" target="_blank" style="color: orange">Site Wiki</a></p>
 			</div>
-			<div style="width: 66%; float: left; background-color: #444; border-left: 1px solid #666; padding: 2%;">
+			<div style="width: 66%; float: left; background-color: #444; border-left: 1px solid #666; padding: 18px;">
 			
 				<?php
 				switch($apiarea)

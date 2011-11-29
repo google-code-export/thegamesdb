@@ -361,7 +361,7 @@
 						if(mysql_num_rows($bannerResult) > 0)
 						{
 						?>
-							<div id="bannerSlider" class="nivoSlider">
+							<div id="bannerSlider" class="nivoSlider" style="width:760px important; height: 140px !important;">
 						<?php
 							$bannerSlideCount = 0;
 							while($banner = mysql_fetch_array($bannerResult))
@@ -444,7 +444,7 @@
 				</div>
 				<?php } else { ?>
 				<div style="margin: auto; width: 500px; box-shadow: 0px 0px 22px #000; border-radius: 16px; background-color: #1e1e1e;">
-					<p style="color: #fff; font-size: 18px; text-shadow: 0px 0px 5px #000; text-align: center; padding: 125px 10px;">This game does not currently have a trailer added.</p>
+					<p style="color: #fff; font-size: 18px; text-shadow: 0px 0px 5px #000; text-align: center; padding: 125px 10px;">This platform does not currently have a trailer added.</p>
 				</div>
 				<?php } ?>
 			</div>
@@ -453,7 +453,7 @@
 		
 		<div style="clear: both;"></div>
 		
-		<div id="gameContentBottom">
+		<!--<div id="gameContentBottom">
 
 			<div style="text-align: center; font-size: 18px; color: #fff; text-decoration: none; text-shadow: 0px 0px 10px #000;">Comments</div>
 
@@ -466,7 +466,7 @@
 				<div style="clear: both;"></div>
 			</div>
 			
-		</div>
+		</div>-->
 		
 		<!--
 		<div id="gameFooter">

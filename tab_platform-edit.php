@@ -444,7 +444,7 @@
 						if(mysql_num_rows($bannerResult) > 0)
 						{
 						?>
-							<div id="bannerSlider" class="nivoSlider">
+							<div id="bannerSlider" class="nivoSlider" style="width:760px important; height: 140px !important;">
 						<?php
 							$bannerSlideCount = 0;
 							while($banner = mysql_fetch_object($bannerResult))

@@ -13,14 +13,14 @@ if($loggedin == 1)
 {
 ?>
 	
-<h1>User Information | <?=$user->username?></h1>
+<h1 style="text-transform: capitalize;">User Information | <?=$user->username?></h1>
 <div style="width: 640px; margin: auto;">
 	<p>&nbsp;</p>
 	<div style="float:left;">
 		<form style="padding: 14px; border: 1px solid #999; background-color: #333;" method="post" action="<?= $baseurl; ?>/userinfo/" enctype="multipart/form-data">
 		<h2>User Image...</h2>
 		<?php
-		$filename = glob("banners/users/" . $comments->userid . "*.jpg");
+		$filename = glob("banners/users/" . $user->id . "-*.jpg");
 		if(file_exists($filename[0]))
 		{
 		?>

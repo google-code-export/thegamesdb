@@ -10,7 +10,7 @@
 
 <div style="text-align: center; padding: 26px 0px;">
 <h1>Register</h1>
-<form action="<?=$fullurl?>" method="POST">
+<form action="<?=$baseurl?>/" method="POST">
 <div id="red"><?=$errormessage?></div>
 <p>&nbsp;</p>
 <p>Please fill in your details below to register for an account.</p>
