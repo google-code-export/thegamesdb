@@ -1490,6 +1490,11 @@ if($tab != "mainmenu")
 		<script type="text/javascript" src="<?php echo $baseurl; ?>/js/theatre/jquery.theatre-1.0.js"></script>
 		<!-- End Platform View Page Scripts -->
 		
+		<!-- Start jQuery Snow Script -->
+		<link rel="stylesheet" href="<?php echo $baseurl; ?>/js/jquery-snowfall/styles.css" type="text/css" media="all" />
+		<script src="<?php echo $baseurl; ?>/js/jquery-snowfall/snowfall.min.jquery.js" type="text/javascript"></script>
+		<!-- End jQuery Snow Script -->
+		
         <script type="text/javascript">
             $('document').ready(function(){
                 var index = 0;
@@ -1836,6 +1841,11 @@ if($tab != "mainmenu")
 
 			</script>
 		
+		<script type="text/javascript">
+			// jQuery Snow Script Instance
+			// $('#main').snowfall({ flakeCount : 100, maxSpeed : 10, round: true, shadow: true, minSize: 2, maxSize: 4 });
+		</script>
+		
 		<!-- Start Force instant run of cufon to circumvent IE delay -->
 		<script type="text/javascript"> Cufon.now(); </script>
 		<!-- End Force instant run of cufon to circumvent IE delay -->
@@ -1879,6 +1889,11 @@ else
 		}) 
 	</script>
 	<!-- End FaceBox Include -->
+	
+	<!-- Start jQuery Snow Script -->
+	<link rel="stylesheet" href="<?php echo $baseurl; ?>/js/jquery-snowfall/styles.css" type="text/css" media="all" />
+	<script src="<?php echo $baseurl; ?>/js/jquery-snowfall/snowfall.min.jquery.js" type="text/javascript"></script>
+	<!-- End jQuery Snow Script -->
 	
 	<style type="text/css">
 		body {
@@ -2158,7 +2173,10 @@ else
 		})();
 	</script>
 	
-
+	<script type="text/javascript">
+		// jQuery Snow Script Instance
+		$(document).snowfall({ flakeCount : 200, maxSpeed : 10, round: true, shadow: true, collection: '#footer', minSize: 2, maxSize: 4 });
+	</script>
 	
 </body>
 </html>
